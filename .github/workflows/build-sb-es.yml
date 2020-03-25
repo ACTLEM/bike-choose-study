@@ -3,9 +3,6 @@
 name: Build Spring Boot with Elasticsearch
 
 on:
-  push:
-    paths:
-      - 'spring-boot-elasticsearch/**'
   pull_request:
     paths:
       - 'spring-boot-elasticsearch/**'
