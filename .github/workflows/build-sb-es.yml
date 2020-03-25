@@ -4,13 +4,9 @@ name: Build Spring Boot with Elasticsearch
 
 on:
   push:
-    branches:
-      - master
     paths:
       - 'spring-boot-elasticsearch/**'
   pull_request:
-    branches:
-      - master
     paths:
       - 'spring-boot-elasticsearch/**'
 
