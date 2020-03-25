@@ -1,4 +1,4 @@
-# This workflow will build the Spring Boot with ElasticSearch application with Gradle
+# This workflow will build the Spring Boot with Elasticsearch application with Gradle
 
 name: Build Spring Boot with Elasticsearch
 
