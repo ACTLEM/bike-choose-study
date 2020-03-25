@@ -1,4 +1,5 @@
-![](https://github.com/ACTLEM/bike-choose-study/.github/workflows/build-sb-es.yml/badge.svg)
+![](https://github.com/ACTLEM/bike-choose-study/workflows/.github/workflows/build-sb-es.yml/badge.svg)
+
 
 # Spring Boot with Elastisearch
 

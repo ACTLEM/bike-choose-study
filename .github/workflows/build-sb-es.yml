@@ -11,7 +11,7 @@ on:
       - 'spring-boot-elasticsearch/**'
 
 jobs:
-  build:
+  build-spring-boot-es:
 
     runs-on: ubuntu-latest
 
