@@ -51,4 +51,6 @@ public class Bike {
     private String wheelSize;
 
     private int modelYear;
+
+    private List<Color> colors;
 }
