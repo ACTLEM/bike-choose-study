@@ -38,3 +38,46 @@ CONTAINER ID              IMAGE                                                 
 <container_id_es2>        docker.elastic.co/elasticsearch/elasticsearch:7.6.1   "/usr/local/bin/dock…"   xx minutes ago      Up xx minutes       0.0.0.0:9200->9200/tcp, 9300/tcp   es01
 <container_id_es3>        docker.elastic.co/elasticsearch/elasticsearch:7.6.1   "/usr/local/bin/dock…"   xx minutes ago      Up xx minutes       9200/tcp, 9300/tcp                 es03
 ```
+
+4. Run Spring Boot Application
+
+```shell script
+./gradlew build
+java -jar ./build/libs/elasticsearch-0.0.1-SNAPSHOT.jar 
+```
+
+## Create a Bike
+
+Run the following curl:
+
+```shell script
+curl --request POST \
+  --url http://localhost:8080/bikes \
+  --header 'content-type: application/json' \
+  --data '{
+	"label": "My new bike",
+	"types": ["URBAN","ELECTRIC"],
+	"genders": ["MENS","WOMENS"],
+	"brand": "Super Bike Company",
+	"frameMaterial": "CARBON",
+	"forkMaterial": "ALUMINIUM",
+	"brake": "HYDRAULIC_DISC",
+	"cableRouting": "MIX",
+	"chainset": "SINGLE",
+	"groupSetBrand": "SHIMANO",
+	"wheelSize": "650b",
+	"modelYear": "2019",
+	"colors": ["BLACK","WHITE"]
+}'
+```
+
+## Get bikes
+
+Run the following curl:
+
+```
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0'
+```
+
+

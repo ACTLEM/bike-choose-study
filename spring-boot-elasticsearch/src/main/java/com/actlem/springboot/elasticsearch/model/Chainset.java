@@ -7,7 +7,7 @@ public enum Chainset {
 
     SINGLE("Single"),
     DOUBLE("Double"),
-    Triple("Triple");
+    TRIPLE("Triple");
 
     private String label;
 
