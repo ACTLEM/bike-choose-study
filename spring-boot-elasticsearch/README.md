@@ -39,6 +39,11 @@ CONTAINER ID              IMAGE                                                 
 <container_id_es3>        docker.elastic.co/elasticsearch/elasticsearch:7.6.1   "/usr/local/bin/dock…"   xx minutes ago      Up xx minutes       9200/tcp, 9300/tcp                 es03
 ```
 
+Volumes:
+ 
+- Volumes will be stored in `/var/lib/docker/volumes/springbootelasticsearch_esdata01/_data/` directory for es1
+- To reset volumes run `docker-compose down -v`
+
 4. Run Spring Boot Application
 
 ```shell script

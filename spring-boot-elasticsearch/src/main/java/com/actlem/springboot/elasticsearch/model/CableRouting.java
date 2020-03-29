@@ -1,7 +1,7 @@
 package com.actlem.springboot.elasticsearch.model;
 
 /**
- * Cable routing, only three possible values
+ * Cable routing of {@link Bike}, only three possible values
  */
 public enum CableRouting {
 

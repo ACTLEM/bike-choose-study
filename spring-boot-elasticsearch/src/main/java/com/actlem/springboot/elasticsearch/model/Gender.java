@@ -1,7 +1,7 @@
 package com.actlem.springboot.elasticsearch.model;
 
 /**
- * Gender for which a bike is suitable. A bike can be suitable for several genders.
+ * Gender for which a {@link Bike} is suitable. A bike can be suitable for several genders.
  */
 public enum Gender {
 

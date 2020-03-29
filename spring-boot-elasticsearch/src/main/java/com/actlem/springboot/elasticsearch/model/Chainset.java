@@ -1,7 +1,7 @@
 package com.actlem.springboot.elasticsearch.model;
 
 /**
- * Chainset type, only three possible values
+ * Chainset type of a {@link Bike}, only three possible values
  */
 public enum Chainset {
 
