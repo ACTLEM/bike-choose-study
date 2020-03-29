@@ -57,7 +57,7 @@ public class Bike {
     private Chainset chainset;
 
     @Field(type = FieldType.Text, fielddata = true)
-    private GroupsetBrand groupSetBrand;
+    private GroupsetBrand groupsetBrand;
 
     @Field(type = FieldType.Text, fielddata = true)
     private WheelSize wheelSize;

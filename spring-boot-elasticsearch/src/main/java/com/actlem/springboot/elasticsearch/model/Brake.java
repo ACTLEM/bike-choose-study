@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Type of brake for a {@link Bike}
  */
-public enum Brake {
+public enum Brake implements ReferenceRepository {
 
     CALIPER("Caliper"),
     CABLE_DISC("Cable Disc Brake"),

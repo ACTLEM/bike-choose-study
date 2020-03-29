@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Major {@link Bike} brands
  */
-public enum BikeBrand {
+public enum BikeBrand implements ReferenceRepository {
 
     BTWIN("Btwin"),
     BIANCHI("Bianchi"),

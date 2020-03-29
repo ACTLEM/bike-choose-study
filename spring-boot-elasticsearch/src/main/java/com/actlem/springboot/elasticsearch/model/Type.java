@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * A type of a bike is the main classification for {@link Bike}. A {@link Bike} can have several types, for example URBAN and ELECTRIC.
  */
-public enum Type {
+public enum Type implements ReferenceRepository {
 
     ROAD("Road Bikes"),
     MOUNTAIN("Mountain Bikes"),

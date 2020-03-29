@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Major groupset brands used for {@link Bike}
  */
-public enum GroupsetBrand {
+public enum GroupsetBrand implements ReferenceRepository {
 
     ROTOR("Rotor"),
     SRAM("Sram"),
