@@ -1,10 +1,12 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Cable routing of {@link Bike}, only three possible values
  */
+@AllArgsConstructor
 public enum CableRouting implements ReferenceRepository {
 
     EXTERNAL("External"),
@@ -13,8 +15,4 @@ public enum CableRouting implements ReferenceRepository {
 
     @Getter
     private String label;
-
-    CableRouting(String label) {
-        this.label = label;
-    }
 }

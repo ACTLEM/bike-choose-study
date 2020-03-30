@@ -1,10 +1,12 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Major {@link Bike} brands
  */
+@AllArgsConstructor
 public enum BikeBrand implements ReferenceRepository {
 
     BTWIN("Btwin"),
@@ -46,8 +48,4 @@ public enum BikeBrand implements ReferenceRepository {
 
     @Getter
     private String label;
-
-    BikeBrand(String label) {
-        this.label = label;
-    }
 }

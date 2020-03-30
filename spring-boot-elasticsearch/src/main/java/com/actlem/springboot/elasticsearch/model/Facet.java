@@ -2,15 +2,14 @@ package com.actlem.springboot.elasticsearch.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 
 /**
  * Represents a facet used to filter {@link Bike}
  */
+@Data
 @AllArgsConstructor
-@Getter
 public class Facet {
 
     /**

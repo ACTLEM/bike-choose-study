@@ -1,10 +1,12 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Major groupset brands used for {@link Bike}
  */
+@AllArgsConstructor
 public enum GroupsetBrand implements ReferenceRepository {
 
     ROTOR("Rotor"),
@@ -14,8 +16,4 @@ public enum GroupsetBrand implements ReferenceRepository {
 
     @Getter
     private String label;
-
-    GroupsetBrand(String label) {
-        this.label = label;
-    }
 }

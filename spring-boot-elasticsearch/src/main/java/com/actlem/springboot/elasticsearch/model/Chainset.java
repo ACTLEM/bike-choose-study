@@ -1,10 +1,12 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Chainset type of a {@link Bike}, only three possible values
  */
+@AllArgsConstructor
 public enum Chainset implements ReferenceRepository {
 
     SINGLE("Single"),
@@ -13,8 +15,4 @@ public enum Chainset implements ReferenceRepository {
 
     @Getter
     private String label;
-
-    Chainset(String label) {
-        this.label = label;
-    }
 }

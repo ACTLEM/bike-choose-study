@@ -1,10 +1,12 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Possible values for a wheel size of a {@link Bike}
  */
+@AllArgsConstructor
 public enum WheelSize implements ReferenceRepository {
 
     INCH_12("12\""),
@@ -22,8 +24,4 @@ public enum WheelSize implements ReferenceRepository {
 
     @Getter
     private String label;
-
-    WheelSize(String label) {
-        this.label = label;
-    }
 }

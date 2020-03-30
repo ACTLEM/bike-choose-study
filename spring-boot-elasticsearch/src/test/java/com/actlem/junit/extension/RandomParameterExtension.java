@@ -1,10 +1,6 @@
 package com.actlem.junit.extension;
 
-import com.actlem.springboot.elasticsearch.model.Attribute;
-import com.actlem.springboot.elasticsearch.model.Bike;
-import com.actlem.springboot.elasticsearch.model.Facet;
-import com.actlem.springboot.elasticsearch.model.FacetValue;
-import com.actlem.springboot.elasticsearch.model.ReferenceRepository;
+import com.actlem.springboot.elasticsearch.model.*;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -15,6 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -60,25 +57,24 @@ public class RandomParameterExtension implements ParameterResolver {
         }
 
         if (List.class.equals(type)) {
-            return IntStream
-                    .range(0, getRandomSize())
-                    .mapToObj(ignored -> generateSubObjectList(parameter))
-                    .collect(toList());
+            return generateObjectList(parameter);
         }
         throw new ParameterResolutionException("No random generator implemented for " + type);
     }
 
     /**
-     * Generate a {@link Bike} or a {@link Facet} according to the type of the {@link List}
+     * Generate a {@link Bike} List or a {@link Facet} List according to the type of the {@link List} in parameter
      */
-    private Object generateSubObjectList(Parameter parameter) {
+    private List<?> generateObjectList(Parameter parameter) {
         String subTypeClassName = getGenericTypeList(parameter);
         if (Bike.class.getName().equals(subTypeClassName)) {
-            return generateBike();
+            return IntStream.range(0, getRandomSize())
+                    .mapToObj(ignored -> generateBike())
+                    .collect(toList());
         }
 
         if (Facet.class.getName().equals(subTypeClassName)) {
-            return generateFacet();
+            return generateFacetList();
         }
 
         throw new ParameterResolutionException("Unknown type class of the list " + parameter);
@@ -97,10 +93,10 @@ public class RandomParameterExtension implements ParameterResolver {
         return generator.nextObject(Bike.class);
     }
 
-    private Facet generateFacet() {
-        Attribute attribute = generator.nextObject(Attribute.class);
-        List<FacetValue> values = generateFacetValueList(attribute);
-        return new Facet(attribute, values);
+    private List<Facet> generateFacetList() {
+        return Arrays.stream(Attribute.values())
+                .map(attribute -> new Facet(attribute, generateFacetValueList(attribute)))
+                .collect(toList());
     }
 
     /**
