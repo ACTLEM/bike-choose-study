@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.With;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.List;
 
@@ -27,30 +29,39 @@ public class Bike {
     /**
      * A bike can have several types, for example: MOUNTAIN and ELECTRIC
      */
+    @Field(type = FieldType.Text, fielddata = true)
     private List<Type> types;
 
     /**
      * A bike can be suitable for several genders
      */
+    @Field(type = FieldType.Text, fielddata = true)
     private List<Gender> genders;
 
-    private String brand;
+    @Field(type = FieldType.Text, fielddata = true)
+    private BikeBrand brand;
 
+    @Field(type = FieldType.Text, fielddata = true)
     private Material frameMaterial;
 
+    @Field(type = FieldType.Text, fielddata = true)
     private Material forkMaterial;
 
+    @Field(type = FieldType.Text, fielddata = true)
     private Brake brake;
 
+    @Field(type = FieldType.Text, fielddata = true)
     private CableRouting cableRouting;
 
+    @Field(type = FieldType.Text, fielddata = true)
     private Chainset chainset;
 
-    private String groupSetBrand;
+    @Field(type = FieldType.Text, fielddata = true)
+    private GroupsetBrand groupsetBrand;
 
-    private String wheelSize;
+    @Field(type = FieldType.Text, fielddata = true)
+    private WheelSize wheelSize;
 
-    private int modelYear;
-
+    @Field(type = FieldType.Text, fielddata = true)
     private List<Color> colors;
 }

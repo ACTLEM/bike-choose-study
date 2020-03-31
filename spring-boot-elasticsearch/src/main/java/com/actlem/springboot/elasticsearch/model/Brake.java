@@ -1,11 +1,13 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Type of brake for a {@link Bike}
  */
-public enum Brake {
+@AllArgsConstructor
+public enum Brake implements ReferenceRepository {
 
     CALIPER("Caliper"),
     CABLE_DISC("Cable Disc Brake"),
@@ -14,8 +16,4 @@ public enum Brake {
 
     @Getter
     private String label;
-
-    Brake(String label) {
-        this.label = label;
-    }
 }

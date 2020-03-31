@@ -1,17 +1,18 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
- * Chainset type, only three possible values
+ * Chainset type of a {@link Bike}, only three possible values
  */
-public enum Chainset {
+@AllArgsConstructor
+public enum Chainset implements ReferenceRepository {
 
     SINGLE("Single"),
     DOUBLE("Double"),
     TRIPLE("Triple");
 
+    @Getter
     private String label;
-
-    Chainset(String label) {
-        this.label = label;
-    }
 }

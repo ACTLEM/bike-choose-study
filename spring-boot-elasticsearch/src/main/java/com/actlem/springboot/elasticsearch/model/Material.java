@@ -1,11 +1,13 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Material for frame or fork of a {@link Bike}
  */
-public enum Material {
+@AllArgsConstructor
+public enum Material implements ReferenceRepository {
 
     ALUMINIUM("Aluminium Alloy"),
     CARBON("Carbon"),
@@ -14,8 +16,4 @@ public enum Material {
 
     @Getter
     private String label;
-
-    Material(String label) {
-        this.label = label;
-    }
 }

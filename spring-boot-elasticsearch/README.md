@@ -39,6 +39,11 @@ CONTAINER ID              IMAGE                                                 
 <container_id_es3>        docker.elastic.co/elasticsearch/elasticsearch:7.6.1   "/usr/local/bin/dock…"   xx minutes ago      Up xx minutes       9200/tcp, 9300/tcp                 es03
 ```
 
+Volumes:
+ 
+- Volumes will be stored in `/var/lib/docker/volumes/springbootelasticsearch_esdata01/_data/` directory for es1
+- To reset volumes run `docker-compose down -v`
+
 4. Run Spring Boot Application
 
 ```shell script
@@ -58,16 +63,16 @@ curl --request POST \
 	"label": "My new bike",
 	"types": ["URBAN","ELECTRIC"],
 	"genders": ["MENS","WOMENS"],
-	"brand": "Super Bike Company",
+	"brand": "TREK",
 	"frameMaterial": "CARBON",
-	"forkMaterial": "ALUMINIUM",
+	"forkMaterial": "CARBON",
 	"brake": "HYDRAULIC_DISC",
 	"cableRouting": "MIX",
 	"chainset": "SINGLE",
 	"groupSetBrand": "SHIMANO",
-	"wheelSize": "650b",
+	"wheelSize": "MM_650C",
 	"modelYear": "2019",
-	"colors": ["BLACK","WHITE"]
+	"colors": ["BLACK"]
 }'
 ```
 
@@ -75,9 +80,18 @@ curl --request POST \
 
 Run the following curl:
 
-```
+```shell script
 curl --request GET \
   --url 'http://localhost:8080/bikes?page=0'
+```
+
+## Get possible facets
+
+Run the following curl:
+
+```shell script
+curl --request GET \
+  --url http://localhost:8080/bikes/facets
 ```
 
 

@@ -1,11 +1,13 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * Color of a {@link Bike}. A {@link Bike} can have several {@link Color}
  */
-public enum Color {
+@AllArgsConstructor
+public enum Color implements ReferenceRepository {
 
     BLACK("Black"),
     BLUE("Blue"),
@@ -21,8 +23,4 @@ public enum Color {
 
     @Getter
     private String label;
-
-    Color(String label) {
-        this.label = label;
-    }
 }

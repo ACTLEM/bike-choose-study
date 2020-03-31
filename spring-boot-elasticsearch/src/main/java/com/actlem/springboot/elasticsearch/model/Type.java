@@ -1,11 +1,13 @@
 package com.actlem.springboot.elasticsearch.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * A type of a bike is the main classification for {@link Bike}. A {@link Bike} can have several types, for example URBAN and ELECTRIC.
  */
-public enum Type {
+@AllArgsConstructor
+public enum Type implements ReferenceRepository {
 
     ROAD("Road Bikes"),
     MOUNTAIN("Mountain Bikes"),
@@ -19,8 +21,4 @@ public enum Type {
 
     @Getter
     private String label;
-
-    Type(String label) {
-        this.label = label;
-    }
 }
