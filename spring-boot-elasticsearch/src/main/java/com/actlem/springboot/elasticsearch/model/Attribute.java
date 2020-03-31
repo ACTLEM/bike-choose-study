@@ -36,7 +36,7 @@ public enum Attribute {
     private Class<? extends ReferenceRepository> repository;
 
     /**
-     * Function to convert a {@link String} to the reference repository according to the attribute.
+     * Function to convert a {@link String} to the reference repository according to the attribute
      */
     @Getter
     private Function<String, ReferenceRepository> converter;
