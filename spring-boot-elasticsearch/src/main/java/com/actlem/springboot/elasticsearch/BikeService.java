@@ -1,10 +1,8 @@
 package com.actlem.springboot.elasticsearch;
 
-import com.actlem.springboot.elasticsearch.model.Attribute;
-import com.actlem.springboot.elasticsearch.model.Bike;
-import com.actlem.springboot.elasticsearch.model.Facet;
-import com.actlem.springboot.elasticsearch.model.FacetValue;
+import com.actlem.springboot.elasticsearch.model.*;
 import lombok.AllArgsConstructor;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
@@ -20,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 /**
@@ -40,10 +38,23 @@ public class BikeService {
     }
 
     /**
-     * Return all {@link Bike} from the repository with pagination (size=20 by default)
+     * Return {@link Bike} from the repository with pagination (size=20 by default) and according to {@link FilterList}
      */
-    public Page<Bike> findAll(Pageable pageable) {
-        return bikeRepository.findAll(pageable);
+    public Page<Bike> findBy(Pageable pageable, FilterList filterList) {
+        // Convert filter list to the filters in the bool query
+        BoolQueryBuilder boolQueryBuilder = boolQuery();
+        filterList
+                .getFilters()
+                .entrySet()
+                .stream()
+                .map(entry -> termsQuery(entry.getKey().getFieldName(), entry.getValue()))
+                .forEach(boolQueryBuilder::filter);
+
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+                .withPageable(pageable)
+                .withFilter(boolQueryBuilder)
+                .build();
+        return bikeRepository.search(nativeSearchQuery);
     }
 
     /**

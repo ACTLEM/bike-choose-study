@@ -13,11 +13,14 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -33,6 +36,23 @@ public class RandomParameterExtension implements ParameterResolver {
 
     private static final int MAX_NUMBER_OF_LIST_ELEMENTS = 10;
     private EasyRandom generator = new EasyRandom();
+    /**
+     * Map of classes with key as name and Class as value for which a simple generation of objects is allowed
+     */
+    private Map<String, Class<?>> classMap = List.of(
+            Bike.class,
+            Type.class,
+            Gender.class,
+            BikeBrand.class,
+            Material.class,
+            Brake.class,
+            CableRouting.class,
+            Chainset.class,
+            GroupsetBrand.class,
+            WheelSize.class,
+            Color.class)
+            .stream()
+            .collect(Collectors.toMap(Class::getName, identity()));
 
     @Retention(RUNTIME)
     @Target(PARAMETER)
@@ -53,7 +73,11 @@ public class RandomParameterExtension implements ParameterResolver {
         Class<?> type = parameter.getType();
 
         if (Bike.class.equals(type)) {
-            return generateBike();
+            return generator.nextObject(Bike.class);
+        }
+
+        if (FilterList.class.equals(type)) {
+            return generateFilterList();
         }
 
         if (List.class.equals(type)) {
@@ -63,14 +87,14 @@ public class RandomParameterExtension implements ParameterResolver {
     }
 
     /**
-     * Generate a {@link Bike} List or a {@link Facet} List according to the type of the {@link List} in parameter
+     * Generate a List of Object from the classMap or a {@link Facet} List according to the type of the {@link List} in parameter
      */
     private List<?> generateObjectList(Parameter parameter) {
         String subTypeClassName = getGenericTypeList(parameter);
-        if (Bike.class.getName().equals(subTypeClassName)) {
-            return IntStream.range(0, getRandomSize())
-                    .mapToObj(ignored -> generateBike())
-                    .collect(toList());
+        Class<?> aClass = classMap.get(subTypeClassName);
+
+        if (aClass != null) {
+            return generateListFromClass(aClass);
         }
 
         if (Facet.class.getName().equals(subTypeClassName)) {
@@ -89,8 +113,10 @@ public class RandomParameterExtension implements ParameterResolver {
                 .getTypeName();
     }
 
-    private Bike generateBike() {
-        return generator.nextObject(Bike.class);
+    private <T> List<T> generateListFromClass(Class<T> classz) {
+        return IntStream.range(0, getRandomSize())
+                .mapToObj(ignored -> generator.nextObject(classz))
+                .collect(toList());
     }
 
     private List<Facet> generateFacetList() {
@@ -108,6 +134,20 @@ public class RandomParameterExtension implements ParameterResolver {
                 .mapToObj(ignored -> generator.nextObject(attribute.getRepository()))
                 .map(value -> new FacetValue(value, generator.nextInt()))
                 .collect(toList());
+    }
+
+    private FilterList generateFilterList() {
+        return new FilterList().addTypes(generateListFromClass(Type.class))
+                .addGenders(generateListFromClass(Gender.class))
+                .addBikeBrands(generateListFromClass(BikeBrand.class))
+                .addFrameMaterials(generateListFromClass(Material.class))
+                .addForkMaterials(generateListFromClass(Material.class))
+                .addBrakes(generateListFromClass(Brake.class))
+                .addCableRoutings(generateListFromClass(CableRouting.class))
+                .addChainsets(generateListFromClass(Chainset.class))
+                .addGroupsetBrands(generateListFromClass(GroupsetBrand.class))
+                .addWheelSizes(generateListFromClass(WheelSize.class))
+                .addColors(generateListFromClass(Color.class));
     }
 
     private int getRandomSize() {

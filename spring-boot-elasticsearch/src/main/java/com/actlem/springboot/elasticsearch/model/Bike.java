@@ -29,39 +29,39 @@ public class Bike {
     /**
      * A bike can have several types, for example: MOUNTAIN and ELECTRIC
      */
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private List<Type> types;
 
     /**
      * A bike can be suitable for several genders
      */
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private List<Gender> genders;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private BikeBrand brand;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private Material frameMaterial;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private Material forkMaterial;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private Brake brake;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private CableRouting cableRouting;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private Chainset chainset;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private GroupsetBrand groupsetBrand;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private WheelSize wheelSize;
 
-    @Field(type = FieldType.Text, fielddata = true)
+    @Field(type = FieldType.Keyword)
     private List<Color> colors;
 }

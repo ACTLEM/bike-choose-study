@@ -1,15 +1,17 @@
 package com.actlem.springboot.elasticsearch;
 
-import com.actlem.junit.extension.RandomParameterExtension;
-import com.actlem.springboot.elasticsearch.model.Bike;
-import com.actlem.springboot.elasticsearch.model.Facet;
-import com.actlem.springboot.elasticsearch.model.FacetValue;
+import com.actlem.junit.extension.RandomParameterExtension.RandomObject;
+import com.actlem.springboot.elasticsearch.model.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
@@ -20,9 +22,11 @@ import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPa
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 import static org.mockito.Mockito.when;
@@ -35,15 +39,15 @@ class BikeServiceTest extends PropertyTest {
     @Mock
     private Pageable pageable;
 
-    @Mock
-    private NativeSearchQuery nativeSearchQuery;
+    @Captor
+    private ArgumentCaptor<NativeSearchQuery> nativeSearchQueryCaptor;
 
     @InjectMocks
     private BikeService cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen saving bike, then create it in the repository")
-    void saveCreateBikeInRepository(@RandomParameterExtension.RandomObject Bike bike) {
+    void saveCreateBikeInRepository(@RandomObject Bike bike) {
         when(bikeRepository.save(bike)).thenReturn(bike);
 
         Bike response = cut.save(bike);
@@ -52,40 +56,42 @@ class BikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting bikes, then find all from the repository")
-    void findAllReturnsBikeFromRepository(@RandomParameterExtension.RandomObject List<Bike> bikes) {
+    @DisplayName("Wen requesting bikes, then find by filter from the repository")
+    void findByReturnsBikeFromRepository(@RandomObject List<Bike> bikes, @RandomObject FilterList filterList) {
         PageImpl<Bike> bikePage = new PageImpl<>(bikes);
-        when(bikeRepository.findAll(pageable)).thenReturn(bikePage);
+        when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(bikePage);
 
-        Page<Bike> response = cut.findAll(pageable);
+        Page<Bike> response = cut.findBy(pageable, filterList);
 
         assertThat(response).isEqualTo(bikePage);
-    }
+        NativeSearchQuery searchQuery = nativeSearchQueryCaptor.getValue();
+        assertThat(searchQuery.getPageable()).isEqualTo(pageable);
 
-    @Test
-    @DisplayName("When building the aggregation search query, the query should contain the attributes")
-    void aggregationSearchQueryContainsAttributes() {
-        NativeSearchQuery nativeSearchQuery = cut.buildAggregationSearchQuery();
-
-        assertThat(nativeSearchQuery.getAggregations()).isEqualTo(searchQueryForFacetsAggregations());
+        //Check that the filters in the query match the input filters
+        List<QueryBuilder> filterQueryBuilder = ((BoolQueryBuilder) searchQuery.getFilter()).filter();
+        Map<String, List<Object>> filtersInQuery = filterQueryBuilder.stream().collect(toMap(
+                queryBuilder -> ((TermsQueryBuilder) queryBuilder).fieldName(),
+                queryBuilder -> ((TermsQueryBuilder) queryBuilder).values()));
+        Map<String, List<? extends ReferenceRepository>> inputFilters = filterList
+                .getFilters()
+                .entrySet()
+                .stream()
+                .collect(toMap(entry -> entry.getKey().getFieldName(), Map.Entry::getValue));
+        assertThat(filtersInQuery).isEqualTo(inputFilters);
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen requesting facets, then find all the facets for bikes in the repository")
-    void findAllFacetsReturnsFromRepository(@RandomParameterExtension.RandomObject List<Facet> facets) {
-        cut = new BikeService(bikeRepository) {
-            @Override
-            NativeSearchQuery buildAggregationSearchQuery() {
-                return nativeSearchQuery;
-            }
-        };
+    void findAllFacetsReturnsFromRepository(@RandomObject List<Facet> facets) {
         Aggregations aggregations = convertFacetsToAggregations(facets);
         AggregatedPage<Bike> aggregatedPage = new AggregatedPageImpl<>(emptyList(), pageable, 0, aggregations);
-        when(bikeRepository.search(nativeSearchQuery)).thenReturn(aggregatedPage);
+        when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(aggregatedPage);
 
         List<Facet> response = cut.findAllFacets();
 
         assertThat(response).isEqualTo(facets);
+        NativeSearchQuery searchQuery = nativeSearchQueryCaptor.getValue();
+        assertThat(searchQuery.getAggregations()).isEqualTo(searchQueryForFacetsAggregations());
     }
 
     private Aggregations convertFacetsToAggregations(List<Facet> facets) {
