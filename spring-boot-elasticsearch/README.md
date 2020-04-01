@@ -69,7 +69,7 @@ curl --request POST \
 	"brake": "HYDRAULIC_DISC",
 	"cableRouting": "MIX",
 	"chainset": "SINGLE",
-	"groupSetBrand": "SHIMANO",
+	"groupsetBrand": "SHIMANO",
 	"wheelSize": "MM_650C",
 	"modelYear": "2019",
 	"colors": ["BLACK"]
@@ -78,12 +78,69 @@ curl --request POST \
 
 ## Get bikes
 
-Run the following curl:
+### Pagination
+
+Run the following curl to get the first page of bikes (by default the size of a page = 20):
 
 ```shell script
 curl --request GET \
   --url 'http://localhost:8080/bikes?page=0'
 ```
+
+Run the following curl to get the second page of bikes with 10 results per page:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=1&size=10'
+```
+
+### Sorting
+
+Run the following curl to get the first page of bikes sorted by brand name by ascending order:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&sort=brand'
+```
+
+or
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&sort=brand,asc'
+```
+
+Run the following curl to get the first page of bikes sorted by brand name by descending order:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&sort=brand,desc'
+```
+
+### Filtering
+
+Run the following curl to get the first page of bikes with types are equals to URBAN or ELECTRIC:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&types=URBAN,ELECTRIC'
+```
+
+Here, the filters that can be used:
+
+| Name           |
+|----------------|
+| types          |
+| genders        |
+| brands         |
+| frames         |
+| forks          |
+| brakes         |
+| cableRoutings  |
+| chainsets      |
+| groupsets      |
+| wheelSizes     |
+| colors         |
 
 ## Get possible facets
 
