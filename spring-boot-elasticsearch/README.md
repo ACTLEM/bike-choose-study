@@ -148,7 +148,18 @@ Run the following curl:
 
 ```shell script
 curl --request GET \
-  --url http://localhost:8080/bikes/facets
+  --url http://localhost:8080/bikes/facets?brands=TREK
 ```
 
+All facets are "multi select", so the filter linked to a facet is not applied to it. 
+It means that if the brand `TREK` is selected, the filter `brand=TREK` will be applied to all facets to get possible values except the facet `BRAND`.
+
+## Logs
+
+To activate the logs of the Elasticsearch queries, add the following lines in the `application.properties` file:
+
+```
+logging.level.org.elasticsearch.client=TRACE
+logging.level.org.apache.http=TRACE
+```
 

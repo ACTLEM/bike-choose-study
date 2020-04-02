@@ -44,17 +44,50 @@ public class BikeController {
             @RequestParam(required = false, defaultValue = "") List<WheelSize> wheelSizes,
             @RequestParam(required = false, defaultValue = "") List<Color> colors,
             Pageable pageable) {
-        FilterList filterList = buildFilters(types, genders, brands, frames, forks, brakes,
-                cableRoutings, chainsets, groupsets, wheelSizes, colors);
+        FilterList filterList = buildFilters(types,
+                genders,
+                brands,
+                frames,
+                forks,
+                brakes,
+                cableRoutings,
+                chainsets,
+                groupsets,
+                wheelSizes,
+                colors);
         return new ResponseEntity<>(bikeService.findBy(pageable, filterList), HttpStatus.PARTIAL_CONTENT);
     }
 
     /**
-     * Endpoint to get possible values to filters {@link Bike} stored in the repository, a.k.a facets.
+     * Endpoint to get possible values to filters {@link Bike} stored in the repository, a.k.a facets, and according to filters.
      */
     @GetMapping("facets")
-    public ResponseEntity<List<Facet>> findAllFacets() {
-        return new ResponseEntity<>(bikeService.findAllFacets(), HttpStatus.OK);
+    public ResponseEntity<List<Facet>> findFacets(
+            @RequestParam(required = false, defaultValue = "") List<Type> types,
+            @RequestParam(required = false, defaultValue = "") List<Gender> genders,
+            @RequestParam(required = false, defaultValue = "") List<BikeBrand> brands,
+            @RequestParam(required = false, defaultValue = "") List<Material> frames,
+            @RequestParam(required = false, defaultValue = "") List<Material> forks,
+            @RequestParam(required = false, defaultValue = "") List<Brake> brakes,
+            @RequestParam(required = false, defaultValue = "") List<CableRouting> cableRoutings,
+            @RequestParam(required = false, defaultValue = "") List<Chainset> chainsets,
+            @RequestParam(required = false, defaultValue = "") List<GroupsetBrand> groupsets,
+            @RequestParam(required = false, defaultValue = "") List<WheelSize> wheelSizes,
+            @RequestParam(required = false, defaultValue = "") List<Color> colors
+
+    ) {
+        FilterList filterList = buildFilters(types,
+                genders,
+                brands,
+                frames,
+                forks,
+                brakes,
+                cableRoutings,
+                chainsets,
+                groupsets,
+                wheelSizes,
+                colors);
+        return new ResponseEntity<>(bikeService.findFacets(filterList), HttpStatus.OK);
     }
 
     private FilterList buildFilters(List<Type> types,
