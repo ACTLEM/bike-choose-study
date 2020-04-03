@@ -118,7 +118,7 @@ public class BikeController {
                 groupsets,
                 wheelSizes,
                 colors);
-        return new ResponseEntity<>(bikeService.search(pageable, filterList), HttpStatus.OK);
+        return new ResponseEntity<>(bikeService.search(pageable, filterList), HttpStatus.PARTIAL_CONTENT);
     }
 
     private FilterList buildFilters(List<Type> types,

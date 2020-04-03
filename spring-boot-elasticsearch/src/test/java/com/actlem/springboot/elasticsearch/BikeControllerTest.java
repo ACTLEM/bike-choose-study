@@ -119,7 +119,7 @@ class BikeControllerTest extends PropertyTest {
         ResponseEntity<SearchResult> response = cut.search(types, genders, bikeBrands, frameMaterials, forkMaterials,
                 brakes, cableRoutings, chainsets, groupsetBrands, wheelSizes, colors, pageable);
 
-        assertThat(response).isEqualTo(new ResponseEntity<>(searchResult, HttpStatus.OK));
+        assertThat(response).isEqualTo(new ResponseEntity<>(searchResult, HttpStatus.PARTIAL_CONTENT));
         assertFilters(types, genders, bikeBrands, frameMaterials, forkMaterials, brakes, cableRoutings, chainsets,
                 groupsetBrands, wheelSizes, colors);
     }
