@@ -2,12 +2,14 @@ package com.actlem.springboot.elasticsearch;
 
 import com.actlem.springboot.elasticsearch.model.*;
 import lombok.AllArgsConstructor;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.FilterAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -32,6 +34,7 @@ import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 public class BikeService {
 
     private BikeRepository bikeRepository;
+    private RestHighLevelClient elasticsearchClient;
 
     /**
      * {@link Bike} creation service
@@ -60,7 +63,6 @@ public class BikeService {
         Aggregations aggregations = ((AggregatedPage<Bike>) bikeRepository
                 .search(buildAggregationSearchQuery(filterList)))
                 .getAggregations();
-
         return convertAggregationsToFacets(aggregations);
     }
 
@@ -96,7 +98,8 @@ public class BikeService {
      * Returns the {@link NativeSearchQuery} to request {@link Aggregations} for each {@link Attribute}
      */
     private NativeSearchQuery buildAggregationSearchQuery(FilterList filterList) {
-        return buildAggregationBuilder(filterList).build();
+        // There is no way to set size with 0, so limit the page to 1 element
+        return buildAggregationBuilder(filterList).withPageable(PageRequest.of(0,1)).build();
     }
 
     private BikePage convertPageToBikePage(Page<Bike> result) {

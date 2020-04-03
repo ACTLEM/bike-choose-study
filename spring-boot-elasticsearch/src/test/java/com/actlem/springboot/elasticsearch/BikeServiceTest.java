@@ -89,6 +89,7 @@ class BikeServiceTest extends PropertyTest {
 
         assertThat(response).isEqualTo(facets);
         NativeSearchQuery searchQuery = nativeSearchQueryCaptor.getValue();
+        assertThat(searchQuery.getPageable().getPageSize()).isEqualTo(1);
         assertThat(searchQuery.getAggregations()).isEqualTo(searchQueryForFacetsAggregations(filterList.getFilters()));
     }
 
