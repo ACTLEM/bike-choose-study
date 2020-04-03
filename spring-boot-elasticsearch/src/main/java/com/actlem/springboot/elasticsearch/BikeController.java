@@ -2,7 +2,6 @@ package com.actlem.springboot.elasticsearch;
 
 import com.actlem.springboot.elasticsearch.model.*;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class BikeController {
      * Endpoint to find {@link Bike} stored in the repository with a pagination (size=20 by default) and optional filters
      */
     @GetMapping
-    public ResponseEntity<Page<Bike>> findBy(
+    public ResponseEntity<BikePage> findBy(
             @RequestParam(required = false, defaultValue = "") List<Type> types,
             @RequestParam(required = false, defaultValue = "") List<Gender> genders,
             @RequestParam(required = false, defaultValue = "") List<BikeBrand> brands,
@@ -88,6 +87,38 @@ public class BikeController {
                 wheelSizes,
                 colors);
         return new ResponseEntity<>(bikeService.findFacets(filterList), HttpStatus.OK);
+    }
+
+    /**
+     * Endpoint to search {@link Bike} and {@link Facet} in the repository, and according to filters.
+     */
+    @GetMapping("search")
+    public ResponseEntity<SearchResult> search(
+            @RequestParam(required = false, defaultValue = "") List<Type> types,
+            @RequestParam(required = false, defaultValue = "") List<Gender> genders,
+            @RequestParam(required = false, defaultValue = "") List<BikeBrand> brands,
+            @RequestParam(required = false, defaultValue = "") List<Material> frames,
+            @RequestParam(required = false, defaultValue = "") List<Material> forks,
+            @RequestParam(required = false, defaultValue = "") List<Brake> brakes,
+            @RequestParam(required = false, defaultValue = "") List<CableRouting> cableRoutings,
+            @RequestParam(required = false, defaultValue = "") List<Chainset> chainsets,
+            @RequestParam(required = false, defaultValue = "") List<GroupsetBrand> groupsets,
+            @RequestParam(required = false, defaultValue = "") List<WheelSize> wheelSizes,
+            @RequestParam(required = false, defaultValue = "") List<Color> colors,
+            Pageable pageable
+    ) {
+        FilterList filterList = buildFilters(types,
+                genders,
+                brands,
+                frames,
+                forks,
+                brakes,
+                cableRoutings,
+                chainsets,
+                groupsets,
+                wheelSizes,
+                colors);
+        return new ResponseEntity<>(bikeService.search(pageable, filterList), HttpStatus.OK);
     }
 
     private FilterList buildFilters(List<Type> types,

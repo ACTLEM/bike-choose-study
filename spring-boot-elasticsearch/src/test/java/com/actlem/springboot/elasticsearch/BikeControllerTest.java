@@ -8,8 +8,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +47,7 @@ class BikeControllerTest extends PropertyTest {
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen requesting bikes, then find them via the service")
     void findByReturnsBikeFromService(
-            @RandomObject List<Bike> bikes,
+            @RandomObject BikePage bikePage,
             @RandomObject List<Type> types,
             @RandomObject List<Gender> genders,
             @RandomObject List<BikeBrand> bikeBrands,
@@ -62,10 +60,9 @@ class BikeControllerTest extends PropertyTest {
             @RandomObject List<WheelSize> wheelSizes,
             @RandomObject List<Color> colors
     ) {
-        PageImpl<Bike> bikePage = new PageImpl<>(bikes);
         when(bikeService.findBy(eq(pageable), filterListCaptor.capture())).thenReturn(bikePage);
 
-        ResponseEntity<Page<Bike>> response = cut.findBy(types, genders, bikeBrands, frameMaterials, forkMaterials,
+        ResponseEntity<BikePage> response = cut.findBy(types, genders, bikeBrands, frameMaterials, forkMaterials,
                 brakes, cableRoutings, chainsets, groupsetBrands, wheelSizes, colors, pageable);
 
         assertThat(response).isEqualTo(new ResponseEntity<>(bikePage, HttpStatus.PARTIAL_CONTENT));
@@ -95,6 +92,34 @@ class BikeControllerTest extends PropertyTest {
                 brakes, cableRoutings, chainsets, groupsetBrands, wheelSizes, colors);
 
         assertThat(response).isEqualTo(new ResponseEntity<>(facets, HttpStatus.OK));
+        assertFilters(types, genders, bikeBrands, frameMaterials, forkMaterials, brakes, cableRoutings, chainsets,
+                groupsetBrands, wheelSizes, colors);
+    }
+
+    @RepeatedTest(NUMBER_OF_TESTS)
+    @DisplayName("Wen searching bikes, then search the bikes and facets via the service")
+    void searchBikesReturnsFromService(
+            @RandomObject BikePage bikePage,
+            @RandomObject List<Facet> facets,
+            @RandomObject List<Type> types,
+            @RandomObject List<Gender> genders,
+            @RandomObject List<BikeBrand> bikeBrands,
+            @RandomObject List<Material> frameMaterials,
+            @RandomObject List<Material> forkMaterials,
+            @RandomObject List<Brake> brakes,
+            @RandomObject List<CableRouting> cableRoutings,
+            @RandomObject List<Chainset> chainsets,
+            @RandomObject List<GroupsetBrand> groupsetBrands,
+            @RandomObject List<WheelSize> wheelSizes,
+            @RandomObject List<Color> colors
+    ) {
+        SearchResult searchResult = new SearchResult(bikePage, facets);
+        when(bikeService.search(eq(pageable), filterListCaptor.capture())).thenReturn(searchResult);
+
+        ResponseEntity<SearchResult> response = cut.search(types, genders, bikeBrands, frameMaterials, forkMaterials,
+                brakes, cableRoutings, chainsets, groupsetBrands, wheelSizes, colors, pageable);
+
+        assertThat(response).isEqualTo(new ResponseEntity<>(searchResult, HttpStatus.OK));
         assertFilters(types, genders, bikeBrands, frameMaterials, forkMaterials, brakes, cableRoutings, chainsets,
                 groupsetBrands, wheelSizes, colors);
     }

@@ -154,6 +154,17 @@ curl --request GET \
 All facets are "multi select", so the filter linked to a facet is not applied to it. 
 It means that if the brand `TREK` is selected, the filter `brand=TREK` will be applied to all facets to get possible values except the facet `BRAND`.
 
+## Search bikes
+
+It is a combination of filtering and finding facets, so it returns a page of bikes and the list of facets, according to filters.
+
+Run the following curl:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes/search?page=0&types=URBAN,ELECTRIC&brands=BTWIN,TREK&genders=BOYS'
+```
+
 ## Logs
 
 To activate the logs of the Elasticsearch queries, add the following lines in the `application.properties` file:
