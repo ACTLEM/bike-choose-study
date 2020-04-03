@@ -76,6 +76,10 @@ public class RandomParameterExtension implements ParameterResolver {
             return generator.nextObject(Bike.class);
         }
 
+        if (BikePage.class.equals(type)) {
+            return generateBikePage();
+        }
+
         if (FilterList.class.equals(type)) {
             return generateFilterList();
         }
@@ -84,6 +88,18 @@ public class RandomParameterExtension implements ParameterResolver {
             return generateObjectList(parameter);
         }
         throw new ParameterResolutionException("No random generator implemented for " + type);
+    }
+
+    private BikePage generateBikePage() {
+        Random random = new Random();
+        List<Bike> bikes = generateListFromClass(Bike.class);
+        return new BikePage()
+                .withBikes(bikes)
+                .withPageNumber(random.nextInt())
+                .withPageSize(random.nextInt())
+                .withTotalPages(random.nextInt())
+                .withNumberOfElements(random.nextInt())
+                .withTotalElements(random.nextLong());
     }
 
     /**

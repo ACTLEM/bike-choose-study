@@ -43,12 +43,13 @@ public class BikeService {
     /**
      * Return {@link Bike} from the repository with pagination (size=20 by default) and according to {@link FilterList}
      */
-    public Page<Bike> findBy(Pageable pageable, FilterList filterList) {
+    public BikePage findBy(Pageable pageable, FilterList filterList) {
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withPageable(pageable)
-                .withFilter(convertFilterListToQuery(null,filterList))
+                .withFilter(convertFilterListToQuery(null, filterList))
                 .build();
-        return bikeRepository.search(nativeSearchQuery);
+        Page<Bike> result = bikeRepository.search(nativeSearchQuery);
+        return convertPageToBikePage(result);
     }
 
     /**
@@ -60,9 +61,19 @@ public class BikeService {
                 .search(buildAggregationSearchQuery(filterList)))
                 .getAggregations();
 
-        return Arrays.stream(Attribute.values())
-                .map(attribute -> convertTermsToFacet(attribute, aggregations.get(attribute.name())))
-                .collect(toList());
+        return convertAggregationsToFacets(aggregations);
+    }
+
+    /**
+     * Return {@link Bike} from the repository with pagination (size=20 by default) and the {@link Facet} according to {@link FilterList}
+     */
+    public SearchResult search(Pageable pageable, FilterList filterList) {
+        NativeSearchQuery nativeSearchQuery = buildAggregationBuilder(filterList)
+                .withPageable(pageable)
+                .withFilter(convertFilterListToQuery(null, filterList))
+                .build();
+        AggregatedPage<Bike> result = (AggregatedPage<Bike>) bikeRepository.search(nativeSearchQuery);
+        return new SearchResult(convertPageToBikePage(result),convertAggregationsToFacets(result.getAggregations()) );
     }
 
     /**
@@ -85,9 +96,23 @@ public class BikeService {
      * Returns the {@link NativeSearchQuery} to request {@link Aggregations} for each {@link Attribute}
      */
     private NativeSearchQuery buildAggregationSearchQuery(FilterList filterList) {
-        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-        addAggregationBuilder(nativeSearchQueryBuilder, filterList);
-        return nativeSearchQueryBuilder.build();
+        return buildAggregationBuilder(filterList).build();
+    }
+
+    private BikePage convertPageToBikePage(Page<Bike> result) {
+        return new BikePage()
+                .withBikes(result.getContent())
+                .withPageNumber(result.getNumber())
+                .withPageSize(result.getSize())
+                .withTotalPages(result.getTotalPages())
+                .withNumberOfElements(result.getNumberOfElements())
+                .withTotalElements(result.getTotalElements());
+    }
+
+    private List<Facet> convertAggregationsToFacets(Aggregations aggregations) {
+        return Arrays.stream(Attribute.values())
+                .map(attribute -> convertTermsToFacet(attribute, aggregations.get(attribute.name())))
+                .collect(toList());
     }
 
     private Facet convertTermsToFacet(Attribute attribute, ParsedFilter parsedFilter) {
@@ -101,13 +126,15 @@ public class BikeService {
                 .collect(toList()));
     }
 
-    private void addAggregationBuilder(NativeSearchQueryBuilder nativeSearchQueryBuilder, FilterList filterList) {
+    private NativeSearchQueryBuilder buildAggregationBuilder(FilterList filterList) {
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
         Arrays.stream(Attribute.values())
                 .forEach(attribute -> {
                     BoolQueryBuilder boolQueryBuilder = convertFilterListToQuery(attribute, filterList);
                     FilterAggregationBuilder aggregationBuilder = buildAggregationBuilder(attribute, boolQueryBuilder);
                     nativeSearchQueryBuilder.addAggregation(aggregationBuilder);
                 });
+        return nativeSearchQueryBuilder;
     }
 
     private FilterAggregationBuilder buildAggregationBuilder(Attribute attribute, BoolQueryBuilder boolQueryBuilder) {

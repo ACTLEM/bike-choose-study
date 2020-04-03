@@ -15,7 +15,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
@@ -43,6 +42,12 @@ class BikeServiceTest extends PropertyTest {
     @Mock
     private Pageable pageable;
 
+    @Mock
+    private Page<Bike> page;
+
+    @Mock
+    private AggregatedPage<Bike> aggregatedPage;
+
     @Captor
     private ArgumentCaptor<NativeSearchQuery> nativeSearchQueryCaptor;
 
@@ -61,11 +66,11 @@ class BikeServiceTest extends PropertyTest {
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen requesting bikes, then find by filter from the repository")
-    void findByReturnsBikeFromRepository(@RandomObject List<Bike> bikes, @RandomObject FilterList filterList) {
-        PageImpl<Bike> bikePage = new PageImpl<>(bikes);
-        when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(bikePage);
+    void findByReturnsBikeFromRepository(@RandomObject BikePage bikePage, @RandomObject FilterList filterList) {
+        mockPageFromBikePage(page, bikePage);
+        when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(page);
 
-        Page<Bike> response = cut.findBy(pageable, filterList);
+        BikePage response = cut.findBy(pageable, filterList);
 
         assertThat(response).isEqualTo(bikePage);
         NativeSearchQuery searchQuery = nativeSearchQueryCaptor.getValue();
@@ -84,6 +89,25 @@ class BikeServiceTest extends PropertyTest {
 
         assertThat(response).isEqualTo(facets);
         NativeSearchQuery searchQuery = nativeSearchQueryCaptor.getValue();
+        assertThat(searchQuery.getAggregations()).isEqualTo(searchQueryForFacetsAggregations(filterList.getFilters()));
+    }
+
+    @RepeatedTest(NUMBER_OF_TESTS)
+    @DisplayName("Wen searching bikes, then find the bikes and the facets in the repository")
+    void searchBikesReturnsFromRepository(@RandomObject BikePage bikePage,
+                                          @RandomObject List<Facet> facets,
+                                          @RandomObject FilterList filterList) {
+        Aggregations aggregations = convertFacetsToAggregations(facets);
+        mockPageFromBikePage(aggregatedPage, bikePage);
+        when(aggregatedPage.getAggregations()).thenReturn(aggregations);
+        when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(aggregatedPage);
+
+        SearchResult response = cut.search(pageable, filterList);
+
+        assertThat(response).isEqualTo(new SearchResult(bikePage, facets));
+        NativeSearchQuery searchQuery = nativeSearchQueryCaptor.getValue();
+        assertThat(searchQuery.getPageable()).isEqualTo(pageable);
+        assertFilters(filterList, searchQuery);
         assertThat(searchQuery.getAggregations()).isEqualTo(searchQueryForFacetsAggregations(filterList.getFilters()));
     }
 
@@ -151,4 +175,14 @@ class BikeServiceTest extends PropertyTest {
                 .forEach(boolQueryBuilder::filter);
         return filter(name, boolQueryBuilder).subAggregation(terms(name).field(fieldName));
     }
+
+    private void mockPageFromBikePage(Page<Bike> page, BikePage bikePage) {
+        when(page.getContent()).thenReturn(bikePage.getBikes());
+        when(page.getNumber()).thenReturn(bikePage.getPageNumber());
+        when(page.getSize()).thenReturn(bikePage.getPageSize());
+        when(page.getTotalPages()).thenReturn(bikePage.getTotalPages());
+        when(page.getNumberOfElements()).thenReturn(bikePage.getNumberOfElements());
+        when(page.getTotalElements()).thenReturn(bikePage.getTotalElements());
+    }
+
 }
