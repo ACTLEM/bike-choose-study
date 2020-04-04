@@ -142,7 +142,7 @@ Here, the filters that can be used:
 | wheelSizes     |
 | colors         |
 
-## Get possible facets
+### Get possible facets
 
 Run the following curl:
 
@@ -154,7 +154,7 @@ curl --request GET \
 All facets are "multi select", so the filter linked to a facet is not applied to it. 
 It means that if the brand `TREK` is selected, the filter `brand=TREK` will be applied to all facets to get possible values except the facet `BRAND`.
 
-## Search bikes
+### Search bikes
 
 It is a combination of filtering and finding facets, so it returns a page of bikes and the list of facets, according to filters.
 
@@ -173,4 +173,23 @@ To activate the logs of the Elasticsearch queries, add the following lines in th
 logging.level.org.elasticsearch.client=TRACE
 logging.level.org.apache.http=TRACE
 ```
+
+## Containerize
+
+### Simple container
+
+To build the `Docker` image, make sure you built the jar file via `gradlew build` and run:
+
+```shell script
+docker build -t actlem/spring-boot-es .
+```
+
+It will create a Docker image from `openjdk:13-jdk-alpine` 
+
+To run it in the host network:
+
+```shell script
+docker run --rm --network host -p 8080:8080 -t actlem/spring-boot-es
+```
+
 
