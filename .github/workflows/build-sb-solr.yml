@@ -1,16 +1,16 @@
-# This workflow will build the Spring Boot with Elasticsearch application with Gradle
+# This workflow will build the Spring Boot with Solr application with Gradle
 
-name: Build Spring Boot with Elasticsearch
+name: Build Spring Boot with Solr
 
 on:
   pull_request:
     paths:
       - 'backend/java/commons/**'
       - 'backend/java/commons-test/**'
-      - 'backend/java/spring-boot-elasticsearch/**'
+      - 'backend/java/spring-boot-solr/**'
 
 jobs:
-  build-spring-boot-es:
+  build-spring-boot-solr:
 
     runs-on: ubuntu-latest
 
@@ -23,4 +23,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x backend/java/gradlew
       - name: Build with Gradle
-        run: cd backend/java && ./gradlew :spring-boot-elasticsearch:build
+        run: cd backend/java && ./gradlew :spring-boot-solr:build
