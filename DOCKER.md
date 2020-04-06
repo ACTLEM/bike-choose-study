@@ -112,7 +112,7 @@ We need to unpack the Spring Boot jar at first:
 ```shell script
 mkdir build/dependency
 cd build/dependency
-(jar|unzip) -xf ../libs/*.jar
+(jar -xf |unzip) ../libs/*.jar
 ```
 
 Build with the following Dockerfile:
