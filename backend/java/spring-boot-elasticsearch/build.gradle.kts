@@ -9,8 +9,6 @@ configurations {
     }
 }
 
-val easyRandomVersion : String? by ext
-
 dependencies {
     implementation(project(":commons"))
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -18,7 +16,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation(project(":commons-test"))
-    testImplementation("org.jeasy:easy-random-core:${easyRandomVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }

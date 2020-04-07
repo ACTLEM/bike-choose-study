@@ -1,11 +1,11 @@
-![](https://github.com/ACTLEM/bike-choose-study/workflows/Build%20Spring%20Boot%20with%20Elasticsearch/badge.svg)
+![Build Spring Boot with Elasticsearch](https://github.com/ACTLEM/bike-choose-study/workflows/Build%20Spring%20Boot%20with%20Elasticsearch/badge.svg)
 
 # Spring Boot with Elastisearch
 
 This module implements the "Choice of bike" feature on the backend server side.
 It retrieves via the HTTP REST API the necessary data to be displayed on the website.
 
-It uses Spring Boot and Spring Data Elasticsearch 2.2.5 and Elasticsearch 7.6.1.
+It uses Spring Boot and Spring Data Elasticsearch 2.2.6 and Elasticsearch 7.6.1.
 
 The build is done via Gradle Kotlin.
 
@@ -50,7 +50,7 @@ Volumes:
 ```shell script
 cd backend/java
 ./gradlew :spring-boot-elasticsearch:build
-java -jar ./spring-boot-elasticsearch/build/libs/elasticsearch-0.0.1-SNAPSHOT.jar 
+java -jar ./spring-boot-elasticsearch/build/libs/spring-boot-elasticsearch-1.0-SNAPSHOT.jar
 ```
 
 ## Create a Bike
@@ -198,5 +198,3 @@ To run it in the host network:
 ```shell script
 docker run --rm --network host -p 8080:8080 -t actlem/spring-boot-es
 ```
-
-
