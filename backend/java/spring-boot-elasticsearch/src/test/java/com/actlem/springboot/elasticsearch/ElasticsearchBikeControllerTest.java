@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-class BikeControllerTest extends PropertyTest {
+class ElasticsearchBikeControllerTest extends PropertyTest {
 
     @Mock
-    private BikeService bikeService;
+    private ElasticsearchBikeService bikeService;
 
     @Mock
     private Pageable pageable;
@@ -33,7 +33,7 @@ class BikeControllerTest extends PropertyTest {
     private ArgumentCaptor<FilterList> filterListCaptor;
 
     @InjectMocks
-    private BikeController cut;
+    private ElasticsearchBikeController cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen saving bike, then create it in the repository via the service")
@@ -47,7 +47,7 @@ class BikeControllerTest extends PropertyTest {
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen requesting bikes, then find them via the service")
-    void findByReturnsBikeFromService(
+    void findByReturnsBikesFromService(
             @RandomObject BikePage<ElasticsearchBike> bikePage,
             @RandomObject List<Type> types,
             @RandomObject List<Gender> genders,

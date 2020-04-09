@@ -14,7 +14,6 @@ import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,18 +25,18 @@ import static org.elasticsearch.search.aggregations.AggregationBuilders.filter;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 
 /**
- * Service used by the input controller to request the {@link BikeRepository}
+ * Service used by the input controller to request the {@link ElasticsearchBikeRepository}
  */
 @Service
 @AllArgsConstructor
-public class BikeService {
+public class ElasticsearchBikeService {
 
-    private BikeRepository bikeRepository;
+    private ElasticsearchBikeRepository bikeRepository;
 
     /**
      * {@link ElasticsearchBike} creation service
      */
-    public ElasticsearchBike save(@RequestBody ElasticsearchBike bike) {
+    public ElasticsearchBike save(ElasticsearchBike bike) {
         return bikeRepository.save(bike);
     }
 

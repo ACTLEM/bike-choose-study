@@ -49,10 +49,60 @@ Volumes:
 - Volumes will be stored in `/var/lib/docker/volumes/springbootsolr_solrdata01/_data/` directory for solr1
 - To reset volumes run `docker-compose down`
 
-4. Run Spring Boot Application
+4. Create the collection
+
+Go to `http://localhost:8981/solr/#/~collections` in your favorite browser.
+Add a Collection like this:
+
+![Create a collection](doc/assets/create_collection.png)
+
+5. Run Spring Boot Application
 
 ```shell script
 cd backend/java
 ./gradlew :spring-boot-solr:build
 java -jar ./spring-boot-solr/build/libs/spring-boot-solr-1.0-SNAPSHOT.jar
+```
+
+## Create a Bike
+
+Run the following curl:
+
+```shell script
+curl --request POST \
+  --url http://localhost:8080/bikes \
+  --header 'content-type: application/json' \
+  --data '{
+	"label": "My new bike",
+	"types": ["URBAN","ELECTRIC"],
+	"genders": ["MENS","WOMENS"],
+	"brand": "TREK",
+	"frameMaterial": "CARBON",
+	"forkMaterial": "CARBON",
+	"brake": "HYDRAULIC_DISC",
+	"cableRouting": "MIX",
+	"chainset": "SINGLE",
+	"groupsetBrand": "SHIMANO",
+	"wheelSize": "MM_650C",
+	"modelYear": "2019",
+	"colors": ["BLACK"]
+}'
+```
+
+## Get bikes
+
+### Pagination
+
+Run the following curl to get the first page of bikes (by default the size of a page = 20):
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0'
+```
+
+Run the following curl to get the second page of bikes with 10 results per page:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=1&size=10'
 ```
