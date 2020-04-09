@@ -35,10 +35,10 @@ import static org.elasticsearch.search.aggregations.AggregationBuilders.filter;
 import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 import static org.mockito.Mockito.when;
 
-class BikeServiceTest extends PropertyTest {
+class ElasticsearchBikeServiceTest extends PropertyTest {
 
     @Mock
-    private BikeRepository bikeRepository;
+    private ElasticsearchBikeRepository bikeRepository;
 
     @Mock
     private Pageable pageable;
@@ -53,7 +53,7 @@ class BikeServiceTest extends PropertyTest {
     private ArgumentCaptor<NativeSearchQuery> nativeSearchQueryCaptor;
 
     @InjectMocks
-    private BikeService cut;
+    private ElasticsearchBikeService cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen saving bike, then create it in the repository")
@@ -67,7 +67,7 @@ class BikeServiceTest extends PropertyTest {
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("Wen requesting bikes, then find by filter from the repository")
-    void findByReturnsBikeFromRepository(@RandomObject BikePage<ElasticsearchBike> bikePage, @RandomObject FilterList filterList) {
+    void findByReturnsBikesFromRepository(@RandomObject BikePage<ElasticsearchBike> bikePage, @RandomObject FilterList filterList) {
         mockPageFromBikePage(page, bikePage);
         when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(page);
 

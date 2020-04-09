@@ -14,9 +14,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/bikes")
 @AllArgsConstructor
-public class BikeController {
+public class ElasticsearchBikeController {
 
-    private BikeService bikeService;
+    private ElasticsearchBikeService bikeService;
 
     /**
      * Endpoint to create a {@link ElasticsearchBike}
