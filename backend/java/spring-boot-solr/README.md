@@ -75,7 +75,7 @@ curl --request POST \
   --data '{
 	"label": "My new bike",
 	"types": ["URBAN","ELECTRIC"],
-	"genders": ["MENS","WOMENS"],
+	"genders": ["MEN","WOMEN"],
 	"brand": "TREK",
 	"frameMaterial": "CARBON",
 	"forkMaterial": "CARBON",
@@ -105,4 +105,75 @@ Run the following curl to get the second page of bikes with 10 results per page:
 ```shell script
 curl --request GET \
   --url 'http://localhost:8080/bikes?page=1&size=10'
+```
+
+### Sorting
+
+Run the following curl to get the first page of bikes sorted by brand name by ascending order:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&sort=brand'
+```
+
+or
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&sort=brand,asc'
+```
+
+Run the following curl to get the first page of bikes sorted by brand name by descending order:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&sort=brand,desc'
+```
+
+### Filtering
+
+Run the following curl to get the first page of bikes with types are equals to URBAN or ELECTRIC:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes?page=0&types=URBAN,ELECTRIC'
+```
+
+Here, the filters that can be used:
+
+| Name           |
+|----------------|
+| types          |
+| genders        |
+| brands         |
+| frames         |
+| forks          |
+| brakes         |
+| cableRoutings  |
+| chainsets      |
+| groupsets      |
+| wheelSizes     |
+| colors         |
+
+### Get possible facets
+
+Run the following curl:
+
+```shell script
+curl --request GET \
+  --url http://localhost:8080/bikes/facets?brands=TREK
+```
+
+All facets are "multi select", so the filter linked to a facet is not applied to it. 
+It means that if the brand `TREK` is selected, the filter `brand=TREK` will be applied to all facets to get possible values except the facet `BRAND`.
+
+### Search bikes
+
+It is a combination of filtering and finding facets, so it returns a page of bikes and the list of facets, according to filters.
+
+Run the following curl:
+
+```shell script
+curl --request GET \
+  --url 'http://localhost:8080/bikes/search?page=0&types=URBAN,ELECTRIC&brands=BTWIN,TREK&genders=BOYS'
 ```

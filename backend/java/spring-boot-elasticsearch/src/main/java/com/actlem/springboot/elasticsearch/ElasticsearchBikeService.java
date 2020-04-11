@@ -15,7 +15,6 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -31,7 +30,7 @@ import static org.elasticsearch.search.aggregations.AggregationBuilders.terms;
 @AllArgsConstructor
 public class ElasticsearchBikeService {
 
-    private ElasticsearchBikeRepository bikeRepository;
+    private final ElasticsearchBikeRepository bikeRepository;
 
     /**
      * {@link ElasticsearchBike} creation service
@@ -110,7 +109,7 @@ public class ElasticsearchBikeService {
     }
 
     private List<Facet> convertAggregationsToFacets(Aggregations aggregations) {
-        return Arrays.stream(Attribute.values())
+        return Attribute.asStream()
                 .map(attribute -> convertTermsToFacet(attribute, aggregations.get(attribute.name())))
                 .collect(toList());
     }
@@ -128,7 +127,7 @@ public class ElasticsearchBikeService {
 
     private NativeSearchQueryBuilder buildAggregationBuilder(FilterList filterList) {
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-        Arrays.stream(Attribute.values())
+        Attribute.asStream()
                 .forEach(attribute -> {
                     BoolQueryBuilder boolQueryBuilder = convertFilterListToQuery(attribute, filterList);
                     FilterAggregationBuilder aggregationBuilder = buildAggregationBuilder(attribute, boolQueryBuilder);

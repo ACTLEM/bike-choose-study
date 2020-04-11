@@ -64,7 +64,7 @@ curl --request POST \
   --data '{
 	"label": "My new bike",
 	"types": ["URBAN","ELECTRIC"],
-	"genders": ["MENS","WOMENS"],
+	"genders": ["MEN","WOMEN"],
 	"brand": "TREK",
 	"frameMaterial": "CARBON",
 	"forkMaterial": "CARBON",

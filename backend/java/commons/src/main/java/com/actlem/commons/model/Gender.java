@@ -11,8 +11,8 @@ public enum Gender implements ReferenceRepository {
 
     BOYS("Boys"),
     GIRLS("Girls"),
-    MENS("Mens"),
-    WOMENS("Womens");
+    MEN("Men"),
+    WOMEN("Women");
 
     @Getter
     private String label;

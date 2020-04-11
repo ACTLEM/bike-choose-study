@@ -17,8 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @With
-@SolrDocument(collection = "bikes")
+@SolrDocument(collection = SolrBike.BIKE_COLLECTION_NAME)
 public class SolrBike extends Bike {
+
+    public static final String BIKE_COLLECTION_NAME = "bikes";
 
     @Id
     private String id;

@@ -13,6 +13,7 @@ public enum BikeBrand implements ReferenceRepository {
     BIANCHI("Bianchi"),
     BMC("BMC"),
     CANNONDALE("Cannondale"),
+    CANYON("Canyon"),
     CERVELO("Cervelo"),
     CINELLI("Cinelli"),
     COLNAGO("Colnago"),
