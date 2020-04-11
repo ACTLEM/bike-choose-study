@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.function.Function;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.stream;
 
 /**
  * List of filterable attributes of a {@link Bike}, an attribute must be linked to a {@link ReferenceRepository}
@@ -46,4 +49,8 @@ public enum Attribute {
      */
     @Getter
     private String fieldName;
+
+    public static Stream<Attribute> asStream() {
+        return stream(Attribute.values());
+    }
 }

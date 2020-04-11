@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ElasticsearchBikeController {
 
-    private ElasticsearchBikeService bikeService;
+    private final ElasticsearchBikeService bikeService;
 
     /**
      * Endpoint to create a {@link ElasticsearchBike}
