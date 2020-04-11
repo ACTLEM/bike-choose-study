@@ -177,3 +177,23 @@ Run the following curl:
 curl --request GET \
   --url 'http://localhost:8080/bikes/search?page=0&types=URBAN,ELECTRIC&brands=BTWIN,TREK&genders=BOYS'
 ```
+### Simple container
+
+To build the `Docker` image, make sure you built the jar file via `gradlew :spring-boot-solr:build` and run:
+
+```shell script
+cd backend/java/spring-boot-solr
+mkdir build/dependency
+cd build/dependency
+unzip ../libs/*.jar
+cd ../..
+docker build -t actlem/spring-boot-solr .
+```
+
+It will create a Docker image from `adoptopenjdk:13-jre-openj9` 
+
+To run it in the host network:
+
+```shell script
+docker run --rm --network host -p 8080:8080 -t actlem/spring-boot-solr
+```
