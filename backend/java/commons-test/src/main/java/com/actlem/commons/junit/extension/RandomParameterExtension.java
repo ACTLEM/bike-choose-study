@@ -35,7 +35,8 @@ import static java.util.stream.Collectors.toList;
 public class RandomParameterExtension implements ParameterResolver {
 
     private static final int MAX_NUMBER_OF_LIST_ELEMENTS = 10;
-    private EasyRandom generator = new EasyRandom();
+    protected static final int MAX_RANDOM_INTEGER = 100;
+    private final EasyRandom generator = new EasyRandom();
     /**
      * Map of classes with key as name and Class as value for which a simple generation of objects is allowed
      */
@@ -82,6 +83,10 @@ public class RandomParameterExtension implements ParameterResolver {
 
         if (List.class.equals(type)) {
             return generateObjectList(parameter);
+        }
+
+        if (Integer.class.equals(type)) {
+            return new Random().nextInt(MAX_RANDOM_INTEGER) + 1;
         }
 
         return generator.nextObject(type);
@@ -164,6 +169,6 @@ public class RandomParameterExtension implements ParameterResolver {
     }
 
     private int getRandomSize() {
-        return new Random().nextInt(MAX_NUMBER_OF_LIST_ELEMENTS);
+        return new Random().nextInt(MAX_NUMBER_OF_LIST_ELEMENTS + 1);
     }
 }

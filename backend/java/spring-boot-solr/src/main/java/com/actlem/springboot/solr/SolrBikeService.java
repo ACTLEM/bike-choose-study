@@ -9,7 +9,6 @@ import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.*;
 import org.springframework.data.solr.core.query.result.FacetPage;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,7 +30,7 @@ public class SolrBikeService {
     /**
      * {@link SolrBike} creation service
      */
-    public SolrBike save(@RequestBody SolrBike bike) {
+    public SolrBike save(SolrBike bike) {
         return bikeRepository.save(bike);
     }
 
