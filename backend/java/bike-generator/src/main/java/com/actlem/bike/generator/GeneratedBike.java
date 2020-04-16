@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -29,13 +29,13 @@ public class GeneratedBike extends Bike {
      * A bike can have several types, for example: MOUNTAIN and ELECTRIC
      */
     @ElementCollection
-    private List<Type> types;
+    private Set<Type> types;
 
     /**
      * A bike can be suitable for several genders
      */
     @ElementCollection
-    private List<Gender> genders;
+    private Set<Gender> genders;
 
     private BikeBrand brand;
 
@@ -54,5 +54,5 @@ public class GeneratedBike extends Bike {
     private WheelSize wheelSize;
 
     @ElementCollection
-    private List<Color> colors;
+    private Set<Color> colors;
 }

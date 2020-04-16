@@ -65,6 +65,25 @@ curl --request GET \
   --url 'http://localhost:8081/bikes?page=1&size=10'
 ```
 
+## Push all bikes to an application
+
+To push all bikes to an external application endpoint allowing the creation of Bikes, configure the endpoint in the application.properties:
+
+```properties
+external.application.endpoint=http://localhost:8080/bikes
+```
+
+Run the following curl, where `size` is the number of bike creations sent in parallel.
+ 
+The application pushes bikes page by page and `size` is the number of bikes per page:
+
+```shell script
+curl --request PUT \
+  --url http://localhost:8081/bikes?size=100
+```
+
+Of course, the application with the creation endpoint must be started.
+
 ## Visualize generated bikes in database
 
 The H2 console is activated in the `application.properties` via `spring.h2.console.enabled=true` 

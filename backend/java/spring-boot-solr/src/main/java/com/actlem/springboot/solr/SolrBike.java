@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.solr.core.mapping.Indexed;
 import org.springframework.data.solr.core.mapping.SolrDocument;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a real Bike persisted in an Solr database
@@ -33,13 +33,13 @@ public class SolrBike extends Bike {
      */
     @Indexed
     @Field
-    private List<Type> types;
+    private Set<Type> types;
 
     /**
      * A bike can be suitable for several genders
      */
     @Indexed
-    private List<Gender> genders;
+    private Set<Gender> genders;
 
     @Indexed
     @Field
@@ -75,5 +75,5 @@ public class SolrBike extends Bike {
 
     @Indexed
     @Field
-    private List<Color> colors;
+    private Set<Color> colors;
 }

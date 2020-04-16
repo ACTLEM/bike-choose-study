@@ -1,19 +1,19 @@
 package com.actlem.springboot.elasticsearch;
 
 import com.actlem.commons.model.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.With;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a real Bike persisted in an Elasticsearch database
  */
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @With
@@ -29,13 +29,13 @@ public class ElasticsearchBike extends Bike {
      * A bike can have several types, for example: MOUNTAIN and ELECTRIC
      */
     @Field(type = FieldType.Keyword)
-    private List<Type> types;
+    private Set<Type> types;
 
     /**
      * A bike can be suitable for several genders
      */
     @Field(type = FieldType.Keyword)
-    private List<Gender> genders;
+    private Set<Gender> genders;
 
     @Field(type = FieldType.Keyword)
     private BikeBrand brand;
@@ -62,5 +62,5 @@ public class ElasticsearchBike extends Bike {
     private WheelSize wheelSize;
 
     @Field(type = FieldType.Keyword)
-    private List<Color> colors;
+    private Set<Color> colors;
 }
