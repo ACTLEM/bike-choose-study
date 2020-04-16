@@ -12,10 +12,10 @@ import java.util.Set;
 /**
  * Represents a real Bike persisted in an Elasticsearch database
  */
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @With
 @Document(indexName = "products", type = "bike")
 public class ElasticsearchBike extends Bike {
