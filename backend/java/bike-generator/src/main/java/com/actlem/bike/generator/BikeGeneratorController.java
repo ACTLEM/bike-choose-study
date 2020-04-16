@@ -25,6 +25,16 @@ public class BikeGeneratorController {
     }
 
     /**
+     * Endpoint to push the {@link GeneratedBike} to an external application.
+     * @param size number of bikes per page sent to the application
+     */
+    @PutMapping
+    public ResponseEntity<String> pushBikes(@RequestParam int size) {
+        bikeService.pushBikes(size);
+        return new ResponseEntity<>("Bikes pushed!", HttpStatus.CREATED);
+    }
+
+    /**
      * Endpoint to delete all {@link GeneratedBike}
      */
     @DeleteMapping

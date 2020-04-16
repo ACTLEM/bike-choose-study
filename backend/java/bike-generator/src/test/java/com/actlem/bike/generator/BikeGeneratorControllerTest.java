@@ -37,6 +37,15 @@ class BikeGeneratorControllerTest extends PropertyTest {
         assertThat(response).isEqualTo(new ResponseEntity<>(configuration.getNumberOfBikes(), HttpStatus.CREATED));
     }
 
+    @RepeatedTest(NUMBER_OF_TESTS)
+    @DisplayName("Wen pushing bikes, then push bikes from the repository to an application via the service")
+    void injectBikesViaService(@RandomObject Integer bikesPerPage) {
+        ResponseEntity<String> response = cut.pushBikes(bikesPerPage);
+
+        verify(bikeService).pushBikes(bikesPerPage);
+        assertThat(response).isEqualTo(new ResponseEntity<>("Bikes pushed!", HttpStatus.CREATED));
+    }
+
     @Test
     @DisplayName("Wen deleting bikes, then delete them from the repository via the service")
     void deleteBikesViaService() {
