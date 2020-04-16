@@ -3,6 +3,9 @@
 name: Build Bike Generator
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     paths:
       - 'backend/java/commons/**'

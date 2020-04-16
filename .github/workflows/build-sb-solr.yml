@@ -3,6 +3,9 @@
 name: Build Spring Boot with Solr
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     paths:
       - 'backend/java/commons/**'
