@@ -1,0 +1,207 @@
+version: '3.8'
+services:
+  spring-boot-solr1:
+    image: actlem/spring-boot-solr
+    container_name: spring-boot-solr1
+    environment:
+      SOLR_HOST: 'http://solr1:8983/solr'
+    networks:
+      - solr
+    depends_on:
+      - solr1
+      - solr2
+      - solr3
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/bikes || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  spring-boot-solr2:
+    image: actlem/spring-boot-solr
+    container_name: spring-boot-solr2
+    environment:
+      SOLR_HOST: 'http://solr2:8983/solr'
+    networks:
+      - solr
+    depends_on:
+      - solr1
+      - solr2
+      - solr3
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/bikes || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  load-balancer:
+    image: nginx:1.17.10-alpine
+    container_name: load-balancer
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - solr
+    depends_on:
+      - spring-boot-solr1
+      - spring-boot-solr2
+
+  solr1:
+    image: solr:8.5
+    container_name: solr1
+    ports:
+      - "8981:8983"
+    environment:
+      ZK_HOST: zoo1:2181,zoo2:2181,zoo3:2181
+      SOLR_HEAP: 512m
+    volumes:
+      - solrdata01:/var/solr/data
+    networks:
+      - solr
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8983/solr/admin/info/system || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1024M
+
+  solr2:
+    image: solr:8.5
+    container_name: solr2
+    ports:
+      - "8982:8983"
+    environment:
+      ZK_HOST: zoo1:2181,zoo2:2181,zoo3:2181
+      SOLR_HEAP: 512m
+    volumes:
+      - solrdata02:/var/solr/data
+    networks:
+      - solr
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8983/solr/admin/info/system || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1024M
+
+  solr3:
+    image: solr:8.5
+    container_name: solr3
+    ports:
+      - "8983:8983"
+    environment:
+      ZK_HOST: zoo1:2181,zoo2:2181,zoo3:2181
+      SOLR_HEAP: 512m
+    volumes:
+      - solrdata03:/var/solr/data
+    networks:
+      - solr
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8983/solr/admin/info/system || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1024M
+
+  zoo1:
+    image: zookeeper:3.6
+    container_name: zoo1
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      - solr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
+  zoo2:
+    image: zookeeper:3.6
+    container_name: zoo2
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      - solr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
+  zoo3:
+    image: zookeeper:3.6
+    container_name: zoo3
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+    networks:
+      - solr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
+volumes:
+  solrdata01:
+    driver: local
+  solrdata02:
+    driver: local
+  solrdata03:
+    driver: local
+
+networks:
+  solr:
+    driver: bridge
