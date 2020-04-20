@@ -176,19 +176,15 @@ logging.level.org.elasticsearch.client=TRACE
 logging.level.org.apache.http=TRACE
 ```
 
-## Containerize
+## Container (Docker)
 
 ### Simple container
 
-To build the `Docker` image, make sure you built the jar file via `gradlew :spring-boot-elasticsearch:build` and run:
+To build the `Docker` image, run:
 
 ```shell script
 cd backend/java/spring-boot-elasticsearch
-mkdir build/dependency
-cd build/dependency
-unzip ../libs/*.jar
-cd ../..
-docker build -t actlem/spring-boot-es .
+./build_docker_sb_es.sh
 ```
 
 It will create a Docker image from `adoptopenjdk:13-jre-openj9` 
@@ -197,4 +193,24 @@ To run it in the host network:
 
 ```shell script
 docker run --rm --network host -p 8080:8080 -t actlem/spring-boot-es
+```
+
+### Docker Compose
+
+In order limit resources and set up a load balancer for performance testing, use the `docker-compose-with-sb.yml` file. 
+By default, two `Elasticsearch Spring Boot` instances based on the previously built image are launched. 
+A `Nginx` container is created to manage the load balancer.
+
+To run it:
+
+```shell script
+docker-compose -f docker-compose-with-sb.yml --compatibility up -d
+````
+
+All queries remain as above (use `http://localhost:8080/bikes`).
+
+To see the logs of a container (here the first spring boot instance):
+
+```shell script
+docker-compose -f docker-compose-with-sb.yml logs --follow spring-boot-es1
 ```

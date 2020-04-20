@@ -177,17 +177,16 @@ Run the following curl:
 curl --request GET \
   --url 'http://localhost:8080/bikes/search?page=0&types=URBAN,ELECTRIC&brands=BTWIN,TREK&genders=BOYS'
 ```
+
+## Container (Docker)
+
 ### Simple container
 
-To build the `Docker` image, make sure you built the jar file via `gradlew :spring-boot-solr:build` and run:
+To build the `Docker` image, run:
 
 ```shell script
 cd backend/java/spring-boot-solr
-mkdir build/dependency
-cd build/dependency
-unzip ../libs/*.jar
-cd ../..
-docker build -t actlem/spring-boot-solr .
+./build_docker_sb_solr.sh
 ```
 
 It will create a Docker image from `adoptopenjdk:13-jre-openj9` 
@@ -196,4 +195,24 @@ To run it in the host network:
 
 ```shell script
 docker run --rm --network host -p 8080:8080 -t actlem/spring-boot-solr
+```
+
+### Docker Compose
+
+In order limit resources and set up a load balancer for performance testing, use the `docker-compose-with-sb.yml` file. 
+By default, two `Solr Spring Boot` instances based on the previously built image are launched. 
+A `Nginx` container is created to manage the load balancer.
+
+To run it:
+
+```shell script
+docker-compose -f docker-compose-with-sb.yml --compatibility up -d
+````
+
+All queries remain as above (use `http://localhost:8080/bikes`).
+
+To see the logs of a container (here the first spring boot instance):
+
+```shell script
+docker-compose -f docker-compose-with-sb.yml logs --follow spring-boot-solr1
 ```

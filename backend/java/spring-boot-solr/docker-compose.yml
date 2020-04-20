@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.8'
 services:
   solr1:
     image: solr:8.5
