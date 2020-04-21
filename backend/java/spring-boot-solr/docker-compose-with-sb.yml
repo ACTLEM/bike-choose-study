@@ -12,7 +12,7 @@ services:
       - solr2
       - solr3
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/bikes || exit 1"]
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/admin/ping || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -35,7 +35,7 @@ services:
       - solr2
       - solr3
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/bikes || exit 1"]
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/admin/ping || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5

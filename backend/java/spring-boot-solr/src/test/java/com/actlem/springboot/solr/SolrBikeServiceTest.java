@@ -49,7 +49,7 @@ class SolrBikeServiceTest extends PropertyTest {
     private SolrBikeService cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen saving bike, then create it in the repository")
+    @DisplayName("When saving bike, then create it in the repository")
     void saveCreateBikeInRepository(@RandomObject SolrBike bike) {
         when(bikeRepository.save(bike)).thenReturn(bike);
 
@@ -59,7 +59,7 @@ class SolrBikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting bikes, then find by filter from the repository")
+    @DisplayName("When requesting bikes, then find by filter from the repository")
     void findByReturnsBikesFromRepository(@RandomObject BikePage<SolrBike> bikePage,
                                           @RandomObject FilterList filterList
                                           ) {
@@ -81,7 +81,7 @@ class SolrBikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting facets, then find the facets for bikes in the repository")
+    @DisplayName("When requesting facets, then find the facets for bikes in the repository")
     void findFacetsReturnsFromRepository(@RandomObject List<Facet> facets, @RandomObject FilterList filterList) {
         SolrResultPage<SolrBike> facetPage = new SolrResultPage<>(emptyList());
         addFacetsToResultPage(facets, facetPage);
@@ -100,7 +100,7 @@ class SolrBikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen searching bikes, then find the bikes and the facets in the repository")
+    @DisplayName("When searching bikes, then find the bikes and the facets in the repository")
     void searchBikesReturnsFromRepository(@RandomObject BikePage<SolrBike> bikePage,
                                           @RandomObject List<Facet> facets,
                                           @RandomObject FilterList filterList) {
