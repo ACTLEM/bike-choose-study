@@ -56,7 +56,7 @@ class ElasticsearchBikeServiceTest extends PropertyTest {
     private ElasticsearchBikeService cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen saving bike, then create it in the repository")
+    @DisplayName("When saving bike, then create it in the repository")
     void saveCreateBikeInRepository(@RandomObject ElasticsearchBike bike) {
         when(bikeRepository.save(bike)).thenReturn(bike);
 
@@ -66,7 +66,7 @@ class ElasticsearchBikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting bikes, then find by filter from the repository")
+    @DisplayName("When requesting bikes, then find by filter from the repository")
     void findByReturnsBikesFromRepository(@RandomObject BikePage<ElasticsearchBike> bikePage, @RandomObject FilterList filterList) {
         mockPageFromBikePage(page, bikePage);
         when(bikeRepository.search(nativeSearchQueryCaptor.capture())).thenReturn(page);
@@ -80,7 +80,7 @@ class ElasticsearchBikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting facets, then find the facets for bikes in the repository")
+    @DisplayName("When requesting facets, then find the facets for bikes in the repository")
     void findFacetsReturnsFromRepository(@RandomObject List<Facet> facets, @RandomObject FilterList filterList) {
         Aggregations aggregations = convertFacetsToAggregations(facets);
         AggregatedPage<ElasticsearchBike> aggregatedPage = new AggregatedPageImpl<>(emptyList(), pageable, 0, aggregations);
@@ -95,7 +95,7 @@ class ElasticsearchBikeServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen searching bikes, then find the bikes and the facets in the repository")
+    @DisplayName("When searching bikes, then find the bikes and the facets in the repository")
     void searchBikesReturnsFromRepository(@RandomObject BikePage<ElasticsearchBike> bikePage,
                                           @RandomObject List<Facet> facets,
                                           @RandomObject FilterList filterList) {

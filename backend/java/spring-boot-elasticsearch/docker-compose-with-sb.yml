@@ -12,7 +12,7 @@ services:
       - es02
       - es03
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/bikes || exit 1"]
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/admin/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -35,7 +35,7 @@ services:
       - es02
       - es03
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/bikes || exit 1"]
+      test: ["CMD-SHELL", "curl --silent --fail localhost:8080/admin/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5

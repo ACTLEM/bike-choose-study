@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -24,4 +25,8 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
         return RestClients.create(ClientConfiguration.create(elasticsearchHost)).rest();
     }
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }
