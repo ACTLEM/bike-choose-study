@@ -76,7 +76,7 @@ class SolrBikeServiceTest extends PropertyTest {
         SimpleQuery query = simpleQueryCaptor.getValue();
         assertThat(query.getOffset()).isEqualTo((long) bikePage.getPageNumber());
         assertThat(query.getRows()).isEqualTo(bikePage.getPageSize());
-        assertThat(requireNonNull(query.getCriteria()).toString()).isEqualTo("AND *$expression:* ");
+        assertThat(requireNonNull(query.getCriteria()).toString()).isEqualTo("AND category$expression:bikes ");
         assertFilters(filterList, query);
     }
 
@@ -94,7 +94,7 @@ class SolrBikeServiceTest extends PropertyTest {
         FacetQuery query = facetQueryCaptor.getValue();
         assertThat(query.getOffset()).isEqualTo(0);
         assertThat(query.getRows()).isEqualTo(1);
-        assertThat(requireNonNull(query.getCriteria()).toString()).isEqualTo("AND *$expression:* ");
+        assertThat(requireNonNull(query.getCriteria()).toString()).isEqualTo("AND category$expression:bikes ");
         assertThat(getFieldNamesFacetOptionsFromQuery(query)).isEqualTo(facetOptionsFieldNames());
         assertFilters(filterList, query);
     }
@@ -119,7 +119,7 @@ class SolrBikeServiceTest extends PropertyTest {
         FacetQuery query = facetQueryCaptor.getValue();
         assertThat(query.getOffset()).isEqualTo((long) bikePage.getPageNumber());
         assertThat(query.getRows()).isEqualTo(bikePage.getPageSize());
-        assertThat(requireNonNull(query.getCriteria()).toString()).isEqualTo("AND *$expression:* ");
+        assertThat(requireNonNull(query.getCriteria()).toString()).isEqualTo("AND category$expression:bikes ");
         assertThat(getFieldNamesFacetOptionsFromQuery(query)).isEqualTo(facetOptionsFieldNames());
         assertFilters(filterList, query);
     }

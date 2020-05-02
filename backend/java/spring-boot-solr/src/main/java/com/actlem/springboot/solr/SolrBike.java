@@ -29,6 +29,13 @@ public class SolrBike extends Bike {
     private String label;
 
     /**
+     * Static category of all {@link SolrBike}
+     */
+    @Indexed
+    @Field
+    private String category = BIKE_COLLECTION_NAME;
+
+    /**
      * A bike can have several types, for example: MOUNTAIN and ELECTRIC
      */
     @Indexed
