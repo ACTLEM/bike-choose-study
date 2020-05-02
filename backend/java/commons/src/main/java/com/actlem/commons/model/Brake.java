@@ -15,5 +15,5 @@ public enum Brake implements ReferenceRepository {
     HYDRAULIC_RIM("Hydraulic Rim Brake");
 
     @Getter
-    private String label;
+    private final String label;
 }

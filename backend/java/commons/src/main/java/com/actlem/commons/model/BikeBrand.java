@@ -48,5 +48,5 @@ public enum BikeBrand implements ReferenceRepository {
     VAN_RYSEL("Van Rysel");
 
     @Getter
-    private String label;
+    private final String label;
 }

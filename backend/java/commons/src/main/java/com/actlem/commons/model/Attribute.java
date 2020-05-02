@@ -30,25 +30,25 @@ public enum Attribute {
      * Label to be displayed
      */
     @Getter
-    private String label;
+    private final String label;
 
     /**
      * {@link ReferenceRepository} linked to the {@link Attribute}
      */
     @Getter
-    private Class<? extends ReferenceRepository> repository;
+    private final Class<? extends ReferenceRepository> repository;
 
     /**
      * Function to convert a {@link String} to the reference repository according to the attribute
      */
     @Getter
-    private Function<String, ReferenceRepository> converter;
+    private final Function<String, ReferenceRepository> converter;
 
     /**
      * Field in the document {@link Bike}
      */
     @Getter
-    private String fieldName;
+    private final String fieldName;
 
     public static Stream<Attribute> asStream() {
         return stream(Attribute.values());

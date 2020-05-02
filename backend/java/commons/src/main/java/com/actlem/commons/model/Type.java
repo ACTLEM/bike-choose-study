@@ -20,5 +20,5 @@ public enum Type implements ReferenceRepository {
     KIDS("Kids Bikes");
 
     @Getter
-    private String label;
+    private final String label;
 }

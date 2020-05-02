@@ -14,5 +14,5 @@ public enum CableRouting implements ReferenceRepository {
     MIX("Internal & External Mix");
 
     @Getter
-    private String label;
+    private final String label;
 }

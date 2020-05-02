@@ -23,5 +23,5 @@ public enum WheelSize implements ReferenceRepository {
     MM_700C("700C\"");
 
     @Getter
-    private String label;
+    private final String label;
 }

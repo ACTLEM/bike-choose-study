@@ -14,5 +14,5 @@ public enum Chainset implements ReferenceRepository {
     TRIPLE("Triple");
 
     @Getter
-    private String label;
+    private final String label;
 }
