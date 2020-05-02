@@ -23,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 public class SolrBikeService {
 
+    private static final String CATEGORY_FIELD_NAME = "category";
     private final SolrBikeRepository bikeRepository;
 
     private final SolrTemplate solrTemplate;
@@ -38,7 +39,7 @@ public class SolrBikeService {
      * Return all {@link SolrBike} from the repository with pagination (size=20 by default) and according to {@link FilterList}
      */
     public BikePage<SolrBike> findBy(Pageable pageable, FilterList filterList) {
-        SimpleQuery query = new SimpleQuery(wildcardCriteria(), pageable);
+        SimpleQuery query = new SimpleQuery(allBikesCriteria(), pageable);
         // Add filter query to the facet query
         buildFilterQueryFromFilterList(filterList).forEach(query::addFilterQuery);
 
@@ -55,7 +56,7 @@ public class SolrBikeService {
      */
     public List<Facet> findFacets(FilterList filterList) {
         // Hack with PageRequest because size=0 is not allowed
-        FacetQuery facetQuery = new SimpleFacetQuery(wildcardCriteria(), PageRequest.of(0, 1))
+        FacetQuery facetQuery = new SimpleFacetQuery(allBikesCriteria(), PageRequest.of(0, 1))
                 .setFacetOptions(buildAllFacetOptions());
 
         // Add filter query to the facet query
@@ -70,7 +71,7 @@ public class SolrBikeService {
      * Return {@link SolrBike} from the repository with pagination (size=20 by default) and the {@link Facet} according to {@link FilterList}
      */
     public SearchResult<SolrBike> search(Pageable pageable, FilterList filterList) {
-        FacetQuery facetQuery = new SimpleFacetQuery(wildcardCriteria(), pageable)
+        FacetQuery facetQuery = new SimpleFacetQuery(allBikesCriteria(), pageable)
                 .setFacetOptions(buildAllFacetOptions());
 
         // Add filter query to the facet query
@@ -81,8 +82,8 @@ public class SolrBikeService {
         return new SearchResult<>(convertPageToBikePage(page), convertPageToFacets(page));
     }
 
-    private Criteria wildcardCriteria() {
-        return new Criteria(Criteria.WILDCARD).expression(Criteria.WILDCARD);
+    private Criteria allBikesCriteria() {
+        return new Criteria(CATEGORY_FIELD_NAME).expression(BIKE_COLLECTION_NAME);
     }
 
     private List<Facet> convertPageToFacets(FacetPage<SolrBike> page) {
@@ -92,7 +93,7 @@ public class SolrBikeService {
     }
 
     private Stream<SimpleFilterQuery> buildFilterQueryFromFilterList(FilterList filterList) {
-       return filterList
+        return filterList
                 .getFilters()
                 .entrySet()
                 .stream()
