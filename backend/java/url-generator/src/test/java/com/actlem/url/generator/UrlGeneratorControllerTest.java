@@ -21,7 +21,7 @@ class UrlGeneratorControllerTest extends PropertyTest {
     private UrlGeneratorController cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen generating urls, then create them in a file via the service")
+    @DisplayName("When generating urls, then create them in a file via the service")
     void generateCreateBikesViaService(@RandomObject UrlGenerationConfiguration configuration, @RandomObject Integer numberOfUrls) {
         when(urlService.generate(configuration)).thenReturn(numberOfUrls);
 

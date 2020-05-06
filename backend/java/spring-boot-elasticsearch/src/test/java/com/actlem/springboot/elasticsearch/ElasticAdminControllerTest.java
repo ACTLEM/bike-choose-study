@@ -21,7 +21,7 @@ class ElasticAdminControllerTest extends PropertyTest {
     private ElasticAdminController cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen pinging the application, then return the health of solr index via the service")
+    @DisplayName("When pinging the application, then return the health of solr index via the service")
     void healthCheckViaService(@RandomObject String stringResponse) {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(stringResponse, HttpStatus.OK);
         when(adminService.elasticHealthCheck()).thenReturn(responseEntity);

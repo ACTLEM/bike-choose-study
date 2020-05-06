@@ -36,7 +36,7 @@ class SolrBikeControllerTest extends PropertyTest {
     private SolrBikeController cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen saving bike, then create it in the repository via the service")
+    @DisplayName("When saving bike, then create it in the repository via the service")
     void saveCreateBikeViaService(@RandomObject SolrBike bike) {
         when(bikeService.save(bike)).thenReturn(bike);
 
@@ -46,7 +46,7 @@ class SolrBikeControllerTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting bikes, then find them via the service")
+    @DisplayName("When requesting bikes, then find them via the service")
     void findByReturnsBikesFromService(
             @RandomObject BikePage<SolrBike> bikePage,
             @RandomObject List<Type> types,
@@ -72,7 +72,7 @@ class SolrBikeControllerTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen requesting facets, then find the facets via the service")
+    @DisplayName("When requesting facets, then find the facets via the service")
     void findFacetsReturnsFromService(
             @RandomObject List<Facet> facets,
             @RandomObject List<Type> types,
@@ -98,7 +98,7 @@ class SolrBikeControllerTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen searching bikes, then search the bikes and facets via the service")
+    @DisplayName("When searching bikes, then search the bikes and facets via the service")
     void searchBikesReturnsFromService(
             @RandomObject BikePage<SolrBike> bikePage,
             @RandomObject List<Facet> facets,

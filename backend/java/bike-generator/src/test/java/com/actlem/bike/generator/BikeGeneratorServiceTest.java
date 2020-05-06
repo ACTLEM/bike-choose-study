@@ -51,7 +51,7 @@ class BikeGeneratorServiceTest extends PropertyTest {
     private BikeGeneratorService cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen generating bikes, then create them according to the rules and save them in the repository")
+    @DisplayName("When generating bikes, then create them according to the rules and save them in the repository")
     void generateSaveBikesInRepository(@RandomObject Integer numberOfBikes) {
         Integer response = cut.generate(new GenerationConfiguration(numberOfBikes));
 
@@ -66,7 +66,7 @@ class BikeGeneratorServiceTest extends PropertyTest {
      * Only 5 tests as it is a resource-consuming test
      */
     @RepeatedTest(5)
-    @DisplayName("Wen pushing bikes, then find all bikes from repository and push them")
+    @DisplayName("When pushing bikes, then find all bikes from repository and push them")
     void pushAllBikesFromRepository(@RandomObject Integer bikesPerPage, @RandomObject Integer totalPages) {
         int lastPageSize = new Random().nextInt(bikesPerPage) + 1;
         int lastPageNumber = totalPages - 1;
@@ -114,7 +114,7 @@ class BikeGeneratorServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen pushing a bike fails, then throw the exception")
+    @DisplayName("When pushing a bike fails, then throw the exception")
     void pushBikeFails(@RandomObject Integer numberOfBikes, @RandomObject String errorMessage) {
 
         EasyRandom generator = new EasyRandom();
@@ -144,7 +144,7 @@ class BikeGeneratorServiceTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen finding all bikes, then find with pagination from the repository")
+    @DisplayName("When finding all bikes, then find with pagination from the repository")
     void findAllReturnsBikesFromRepository(@RandomObject BikePage<GeneratedBike> bikePage) {
         mockPageFromBikePage(bikePage);
         when(bikeRepository.findAll(pageable)).thenReturn(page);
@@ -155,7 +155,7 @@ class BikeGeneratorServiceTest extends PropertyTest {
     }
 
     @Test
-    @DisplayName("Wen deleting bikes, then delete them from the repository")
+    @DisplayName("When deleting bikes, then delete them from the repository")
     void deleteBikesFromRepository() {
         cut.deleteAll();
         verify(bikeRepository).deleteAll();
