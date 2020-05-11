@@ -15,7 +15,7 @@ import static org.apache.commons.math3.util.CombinatoricsUtils.combinationsItera
 public class CombinationService {
 
     /**
-     * Compute all possible combinations of "k" {@link Integer} from [0,...n] {@link Integer}.
+     * Compute all possible combinations of "k" {@link Integer} from [0,...n-1] {@link Integer}, where n is the initialArraySize.
      * It returns a {@link List} of {@link Integer[]} whose elements represents the combinations.
      */
     public List<int[]> generateCombinations(int initialArraySize, int combinationSize) {

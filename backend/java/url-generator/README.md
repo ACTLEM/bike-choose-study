@@ -30,6 +30,6 @@ curl --request POST \
   --data '{
 	"maxParameters": 3,
 	"maxValues": 2,
-    "fileName": "example"
+    "fileName": "example.csv"
 }'
 ```

@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.FileNotFoundException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +24,7 @@ class UrlGeneratorControllerTest extends PropertyTest {
 
     @RepeatedTest(NUMBER_OF_TESTS)
     @DisplayName("When generating urls, then create them in a file via the service")
-    void generateCreateBikesViaService(@RandomObject UrlGenerationConfiguration configuration, @RandomObject Integer numberOfUrls) {
+    void generateCreateUrlsViaService(@RandomObject UrlGenerationConfiguration configuration, @RandomObject Integer numberOfUrls) throws FileNotFoundException {
         when(urlService.generate(configuration)).thenReturn(numberOfUrls);
 
         ResponseEntity<Integer> response = cut.generate(configuration);
