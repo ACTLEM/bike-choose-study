@@ -15,5 +15,5 @@ public enum GroupsetBrand implements ReferenceRepository {
     CAMPAGNOLO("Campagnolo");
 
     @Getter
-    private String label;
+    private final String label;
 }

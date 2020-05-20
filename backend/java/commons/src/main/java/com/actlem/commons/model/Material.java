@@ -15,5 +15,5 @@ public enum Material implements ReferenceRepository {
     TITANIUM("Titanium");
 
     @Getter
-    private String label;
+    private final String label;
 }

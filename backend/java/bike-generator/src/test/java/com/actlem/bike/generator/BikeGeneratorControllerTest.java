@@ -28,7 +28,7 @@ class BikeGeneratorControllerTest extends PropertyTest {
     private BikeGeneratorController cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen generating bikes, then create them in the repository via the service")
+    @DisplayName("When generating bikes, then create them in the repository via the service")
     void generateCreateBikesViaService(@RandomObject GenerationConfiguration configuration) {
         when(bikeService.generate(configuration)).thenReturn(configuration.getNumberOfBikes());
 
@@ -38,7 +38,7 @@ class BikeGeneratorControllerTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen pushing bikes, then push bikes from the repository to an application via the service")
+    @DisplayName("When pushing bikes, then push bikes from the repository to an application via the service")
     void injectBikesViaService(@RandomObject Integer bikesPerPage) {
         ResponseEntity<String> response = cut.pushBikes(bikesPerPage);
 
@@ -47,7 +47,7 @@ class BikeGeneratorControllerTest extends PropertyTest {
     }
 
     @Test
-    @DisplayName("Wen deleting bikes, then delete them from the repository via the service")
+    @DisplayName("When deleting bikes, then delete them from the repository via the service")
     void deleteBikesViaService() {
         ResponseEntity<String> response = cut.deleteAll();
 
@@ -56,7 +56,7 @@ class BikeGeneratorControllerTest extends PropertyTest {
     }
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen finding bikes, then find them in the repository via the service")
+    @DisplayName("When finding bikes, then find them in the repository via the service")
     void findAllBikesViaService(@RandomObject BikePage<GeneratedBike> bikePage) {
         when(bikeService.findAll(pageable)).thenReturn(bikePage);
 

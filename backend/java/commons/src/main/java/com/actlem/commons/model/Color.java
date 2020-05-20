@@ -22,5 +22,5 @@ public enum Color implements ReferenceRepository {
     YELLOW("Yellow");
 
     @Getter
-    private String label;
+    private final String label;
 }

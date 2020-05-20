@@ -21,7 +21,7 @@ class SolrAdminControllerTest extends PropertyTest {
     private SolrAdminController cut;
 
     @RepeatedTest(NUMBER_OF_TESTS)
-    @DisplayName("Wen pinging the application, then return the health of solr index via the service")
+    @DisplayName("When pinging the application, then return the health of solr index via the service")
     void pingSolrViaService(@RandomObject String jsonString) {
         when(adminService.pingSolr()).thenReturn(jsonString);
 

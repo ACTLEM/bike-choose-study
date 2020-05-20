@@ -15,5 +15,5 @@ public enum Gender implements ReferenceRepository {
     WOMEN("Women");
 
     @Getter
-    private String label;
+    private final String label;
 }
