@@ -14,7 +14,7 @@ on:
       - 'backend/java/url-parameter-generator/**'
 
 jobs:
-  build-bike-generator:
+  build-generator:
 
     runs-on: ubuntu-latest
 
