@@ -14,12 +14,11 @@ Minimum requests per second: 400 req/sec
 
 ## Request Generation
 
-The tool `url-generator` will generate URLs used by the performance tool `JMeter` as a `.csv` file. 
-JMeter will use randomly these URLs for each client.
-Each URL has some filters, and a page number between 0 and 5 as it is uncommon to have clients clicking on pages greater than 5. 
+The tool `url-parameter-generator` will generate URL parameters used by the performance tool `JMeter` as a `.csv` file. 
+JMeter will use randomly these parameters for each client.
 JMeter handles the random `page_number` and `page_size` parameter, so a URL looks like: `http://localhost:8080/bikes?page=${page_number}&size=${page_size}&brands=TREK,CANYON&genders=WOMEN`
 
-See [URL Generator](../java/url-generator/README.md)
+See [URL Parameters Generator](../java/url-parameter-generator/README.md)
 
 ## Run performance testing
 

@@ -1,4 +1,4 @@
-package com.actlem.url.generator;
+package com.actlem.url.parameter.generator;
 
 import com.actlem.commons.junit.extension.PropertyTest;
 import com.actlem.commons.junit.extension.RandomParameterExtension.RandomObject;

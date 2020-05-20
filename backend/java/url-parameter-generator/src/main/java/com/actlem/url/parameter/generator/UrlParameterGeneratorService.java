@@ -1,9 +1,7 @@
-package com.actlem.url.generator;
+package com.actlem.url.parameter.generator;
 
 import com.actlem.commons.model.*;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,28 +18,20 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Service used by the input controller to generate URLs
+ * Service used by the input controller to generate URL Parameters
  */
 @Service
 @RequiredArgsConstructor
-public class UrlGeneratorService {
-
-    private final static String PAGE_PARAM = "?page=${page_number}&size=${page_size}";
-
-    @Setter
-    @Value("${external.application.endpoint}")
-    private String externalApplicationEndpoint;
+public class UrlParameterGeneratorService {
 
     private final CombinationService combinationService;
 
     /**
-     * Generate URLs according to the provided configuration
+     * Generate URL parameters according to the provided configuration
      */
-    public int generate(@RequestBody UrlGenerationConfiguration configuration) throws FileNotFoundException {
-        // Set of urls, add url without parameter
-        Set<String> urls = new HashSet<>();
-        String coreUrl = externalApplicationEndpoint + PAGE_PARAM;
-        urls.add(coreUrl);
+    public int generate(@RequestBody UrlParameterGenerationConfiguration configuration) throws FileNotFoundException {
+        // Set of url parameters
+        Set<String> urlParameters = new HashSet<>();
 
         // Get all combination of parameters
         int maxParameters = configuration.getMaxParameters();
@@ -69,21 +59,20 @@ public class UrlGeneratorService {
 
         // For all combinations of attributes, build all possible query parameter
         for (List<Attribute> combination : attributeCombinations) {
-            // initialize url with the unique coreUrl
-            List<String> combinationUrls = new ArrayList<>();
-            combinationUrls.add(coreUrl);
+            // This list will contain all combinations for the current attribute combination
+            List<String> combinationUrlParameters = new ArrayList<>();
             for (Attribute attribute : combination) {
-                List<String> allAttributeParameters = valuesByAttribute.get(attribute);
-                combinationUrls = mergeAttributeCombinations(Objects.requireNonNull(combinationUrls), allAttributeParameters);
+                List<String> attributeParameterCombinations = valuesByAttribute.get(attribute);
+                combinationUrlParameters = mergeAttributeCombinations(Objects.requireNonNull(combinationUrlParameters), attributeParameterCombinations);
             }
-            urls.addAll(combinationUrls);
+            urlParameters.addAll(combinationUrlParameters);
         }
 
         try (PrintWriter printWriter = getCSVFile(configuration.getFileName())) {
-            urls.forEach(printWriter::println);
+            urlParameters.forEach(printWriter::println);
         }
 
-        return urls.size();
+        return urlParameters.size();
     }
 
     private <T extends Enum<T>> List<String> getValuesCombinations(int maxValues, String fieldName, T[] values) {
@@ -93,18 +82,26 @@ public class UrlGeneratorService {
                 convertCombinationToValueString(fieldName, position -> values[position].name()));
     }
 
-    private List<String> mergeAttributeCombinations(List<String> combinationUrls, List<String> attributeParameters) {
+    private List<String> mergeAttributeCombinations(List<String> combinationUrlParameters, List<String> attributeParameterCombinations) {
+        if(combinationUrlParameters.isEmpty()) {
+            return attributeParameterCombinations;
+        } else {
+            return mergeCombination(combinationUrlParameters, attributeParameterCombinations);
+        }
+    }
+
+    private List<String> mergeCombination(List<String> combinationUrlParameters, List<String> attributeParameterCombinations) {
         List<String> mergedList = new ArrayList<>();
-        for (String url : combinationUrls) {
-            for (String parameter : attributeParameters) {
-                mergedList.add(url + parameter);
+        for (String url : combinationUrlParameters) {
+            for (String parameter : attributeParameterCombinations) {
+                mergedList.add(url + "&" + parameter);
             }
         }
         return mergedList;
     }
 
     /**
-     * Get all combination until max elements on a total elements after applying a conversion function
+     * Get all combinations until max elements on a total elements after applying a conversion function
      */
     private <T> List<T> getAllConvertedCombinations(int maxElements,
                                                     int totalOfEnumElements,
@@ -119,11 +116,11 @@ public class UrlGeneratorService {
     }
 
     /**
-     * Function to convert a combination of a String representing a parameter with values in query
+     * Function to convert a combination to a String representing a parameter with values in query
      */
     private Function<int[], String> convertCombinationToValueString(String attributeName,
                                                                     IntFunction<String> convertPositionToString) {
-        return intArray -> "&" + attributeName + "=" + Arrays
+        return intArray -> attributeName + "=" + Arrays
                 .stream(intArray)
                 .mapToObj(convertPositionToString)
                 .collect(joining(","));

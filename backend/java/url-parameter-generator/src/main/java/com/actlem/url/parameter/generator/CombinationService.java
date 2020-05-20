@@ -1,4 +1,4 @@
-package com.actlem.url.generator;
+package com.actlem.url.parameter.generator;
 
 import org.springframework.stereotype.Service;
 

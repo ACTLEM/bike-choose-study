@@ -1,16 +1,16 @@
-package com.actlem.url.generator;
+package com.actlem.url.parameter.generator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Configuration with provided parameters for the generation of urls
+ * Configuration with provided parameters for the generation of URL parameters
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UrlGenerationConfiguration {
+public class UrlParameterGenerationConfiguration {
 
     /**
      * Maximum of query parameters in the url

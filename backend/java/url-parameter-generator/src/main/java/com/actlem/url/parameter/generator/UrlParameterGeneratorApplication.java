@@ -1,13 +1,13 @@
-package com.actlem.url.generator;
+package com.actlem.url.parameter.generator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UrlGeneratorApplication {
+public class UrlParameterGeneratorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UrlGeneratorApplication.class, args);
+        SpringApplication.run(UrlParameterGeneratorApplication.class, args);
     }
 
 }

@@ -16,3 +16,7 @@ All tests were run on a Linux environment, so it is preferable to have a Linux e
 ## Docker images
 
 Some improvements can be made from the build of the Docker image of our application: [Docker Optimization](DOCKER.md)
+
+## Performance tests
+
+The strategy of performance tests for backend servers can be found here: [Tests Strategy](backend/load-testing/STRATEGY.md) 

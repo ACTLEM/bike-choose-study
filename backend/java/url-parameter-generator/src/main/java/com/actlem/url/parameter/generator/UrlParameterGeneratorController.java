@@ -1,4 +1,4 @@
-package com.actlem.url.generator;
+package com.actlem.url.parameter.generator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.io.FileNotFoundException;
 
 @Controller
-@RequestMapping("/urls")
+@RequestMapping("/url-parameters")
 @AllArgsConstructor
-public class UrlGeneratorController {
+public class UrlParameterGeneratorController {
 
-    private final UrlGeneratorService urlService;
+    private final UrlParameterGeneratorService urlService;
 
     /**
-     * Endpoint to generate urls
+     * Endpoint to generate URL parameters and return the number of created instances of URL parameters
      */
     @PostMapping
-    public ResponseEntity<Integer> generate(@RequestBody UrlGenerationConfiguration configuration) throws FileNotFoundException {
+    public ResponseEntity<Integer> generate(@RequestBody UrlParameterGenerationConfiguration configuration) throws FileNotFoundException {
         return new ResponseEntity<>(urlService.generate(configuration), HttpStatus.CREATED);
     }
 }
