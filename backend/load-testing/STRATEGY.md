@@ -2,14 +2,15 @@
 
 ## Expected Metrics
 
-Average simultaneous expected clients: 100
-Maximum simultaneous clients: 1000
-Maximum response time: 150ms
+Nominal maximum simultaneous expected clients: 200
+Maximum simultaneous clients during a peak of activity: 1000
+Maximum response time in nominal case: 150ms
+Maximum response time in stress test: 1s
 Minimum requests per second: 400 req/sec
 
 ## Strategy
 
-- With the maximum of clients: find the minimum of resources required satisfying the response time and requests per second constraints
+- With the maximum of clients during a peak of activity: find the minimum of resources required satisfying the response time and requests per second constraints
 - Load testing with these minimal resources and record consumption of resources, verify that it satisfies response time and requests per seconds
 
 ## Request Generation
