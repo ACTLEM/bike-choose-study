@@ -3,12 +3,12 @@ services:
   spring-boot-postgres1:
     image: actlem/spring-boot-postgres
     container_name: spring-boot-postgres1
+    environment:
+      POSTGRES_HOST: 'postgres_container'
     networks:
       - postgres
     depends_on:
-      - postgres1
-      - postgres2
-      - postgres3
+      - postgres
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:8080/actuator/health || exit 1"]
       interval: 30s
@@ -18,18 +18,18 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 128M
+          cpus: '1'
+          memory: 256M
 
   spring-boot-postgres2:
     image: actlem/spring-boot-postgres
     container_name: spring-boot-postgres2
+    environment:
+      POSTGRES_HOST: 'postgres_container'
     networks:
       - postgres
     depends_on:
-      - postgres1
-      - postgres2
-      - postgres3
+      - postgres
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:8080/actuator/health || exit 1"]
       interval: 30s
@@ -39,12 +39,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 128M
+          cpus: '1'
+          memory: 256M
 
   load-balancer:
     image: nginx:1.17.10-alpine
-    container_name: load-balancer
+    container_name: load-balancer-sb-postgres
     ports:
       - "8080:80"
     volumes:
