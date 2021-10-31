@@ -19,7 +19,7 @@ cd backend/java
 
 ```shell script
 cd backend/java
-./gradlew ./gradlew :bike-generator:build
+./gradlew :bike-generator:build
 java -jar ./bike-generator/build/libs/bike-generator-1.0-SNAPSHOT.jar
 ```
 

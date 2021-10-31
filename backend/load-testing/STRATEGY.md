@@ -24,6 +24,3 @@ See [URL Parameters Generator](../java/url-parameter-generator/README.md)
 ## Run performance testing
 
 To run with stress and load testing, see [Running performance tests with JMeter](JMETER.md)
-
-
-

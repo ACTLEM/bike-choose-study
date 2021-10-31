@@ -1,0 +1,29 @@
+# This workflow will build the Spring Boot with Postgres application with Gradle
+
+name: Build Spring Boot with Postgres
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    paths:
+      - 'backend/java/commons/**'
+      - 'backend/java/commons-test/**'
+      - 'backend/java/spring-boot-postgres/**'
+
+jobs:
+  build-spring-boot-postgres:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 13
+        uses: actions/setup-java@v1
+        with:
+          java-version: 13
+      - name: Grant execute permission for gradlew
+        run: chmod +x backend/java/gradlew
+      - name: Build with Gradle
+        run: cd backend/java && ./gradlew :spring-boot-postgres:build
