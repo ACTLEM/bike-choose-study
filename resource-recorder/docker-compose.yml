@@ -34,6 +34,8 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     expose:
       - 8080
+    ports:
+      - "8085:8080"
 
   grafana:
     image: grafana/grafana:latest

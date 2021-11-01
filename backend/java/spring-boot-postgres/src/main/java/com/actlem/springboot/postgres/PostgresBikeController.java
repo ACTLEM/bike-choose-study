@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -27,9 +27,30 @@ public class PostgresBikeController {
         return new ResponseEntity<>(bikeService.save(bike), HttpStatus.CREATED);
     }
 
-    @GetMapping("all")
-    public ResponseEntity<Collection<PostgresBike>> findAll() {
-        return new ResponseEntity<>(bikeService.findAll(), HttpStatus.OK);
+    @GetMapping("star")
+    public ResponseEntity<String> findAllWithStar(
+            @RequestParam("limit") int limit,
+            @RequestParam("iterations") int iterations) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        for (int i = 0; i < iterations; i++) {
+            bikeService.findAllStar(i * limit, limit);
+        }
+        stopWatch.stop();
+        return new ResponseEntity<>("Time Elapsed: " + stopWatch.getTotalTimeMillis(), HttpStatus.OK);
+    }
+
+    @GetMapping("field")
+    public ResponseEntity<String> findAllWithField(
+            @RequestParam("limit") int limit,
+            @RequestParam("iterations") int iterations) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        for (int i = 0; i < iterations; i++) {
+            bikeService.findAllField(i * limit, limit);
+        }
+        stopWatch.stop();
+        return new ResponseEntity<>("Time Elapsed: " + stopWatch.getTotalTimeMillis(), HttpStatus.OK);
     }
 
     /**

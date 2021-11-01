@@ -4,7 +4,6 @@ import com.actlem.commons.model.*;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Represents a real Bike persisted in a Postgres database
@@ -46,15 +45,15 @@ public class PostgresBike extends Bike {
      * A bike can have several types, for example: MOUNTAIN and ELECTRIC
      */
     // TODO Index
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Type> types;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<Type> types;
 
     /**
      * A bike can be suitable for several genders
      */
     // TODO Index
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Gender> genders;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<Gender> genders;
 
     @Column
     private BikeBrand brand;
@@ -81,6 +80,6 @@ public class PostgresBike extends Bike {
     private WheelSize wheelSize;
 
     // TODO Index
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Color> colors;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<Color> colors;
 }

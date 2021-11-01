@@ -2,11 +2,14 @@ package com.actlem.springboot.postgres;
 
 import com.actlem.commons.model.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service used by the input controller to request the {@link PostgresBikeRepository}
@@ -25,8 +28,24 @@ public class PostgresBikeService {
         return bikeRepository.save(bike);
     }
 
-    public Collection<PostgresBike> findAll() {
-        return bikeRepository.customFindAll();
+    public Collection<PostgresBike> findAll(int offset, int limit) {
+        return bikeRepository.findAll(PageRequest.of(offset, limit)).toList();
+    }
+
+    public Collection<PostgresBike> findAllStar(int offset, int limit) {
+        Collection<Map<String, Object>> maps = bikeRepository.customFindAllStar(offset, limit);
+        return maps.stream().map(stringObjectMap -> new PostgresBike()
+                .withId(stringObjectMap.get("id").toString())
+                .withLabel(stringObjectMap.get("label").toString())
+        ).collect(Collectors.toList());
+    }
+
+    public Collection<PostgresBike> findAllField(int offset, int limit) {
+        Collection<Map<String, Object>> maps = bikeRepository.customFindAllField(offset, limit);
+        return maps.stream().map(stringObjectMap -> new PostgresBike()
+                .withId(stringObjectMap.get("id").toString())
+                .withLabel(stringObjectMap.get("label").toString())
+        ).collect(Collectors.toList());
     }
 
     /**
